@@ -1,0 +1,446 @@
+<!doctype html>
+{% load billing_extras %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ invoice.invoice_number }}</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      padding: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #f8f9fa;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .btn { 
+      display:inline-block; 
+      padding:10px 14px; 
+      border:1px solid #222; 
+      text-decoration:none; 
+      border-radius:8px; 
+      color:#222; 
+      margin-right:8px;
+      background-color: white;
+      transition: all 0.3s;
+    }
+    .btn:hover {
+      background-color: #f0f0f0;
+    }
+    .btn-sm { padding:5px 10px; font-size:0.9em; }
+    .btn-success { background-color: #28a745; color: white; border-color: #28a745; }
+    .btn-success:hover { background-color: #218838; }
+    .btn-danger { background-color: #dc3545; color: white; border-color: #dc3545; }
+    .btn-danger:hover { background-color: #c82333; }
+    .btn-warning { background-color: #ffc107; color: #222; border-color: #ffc107; }
+    .btn-warning:hover { background-color: #e0a800; }
+    .btn-info { background-color: #17a2b8; color: white; border-color: #17a2b8; }
+    .btn-info:hover { background-color: #138496; }
+    .box { 
+      border:1px solid #ddd; 
+      border-radius:10px; 
+      padding:14px; 
+      margin:12px 0;
+      background-color: white;
+    }
+    table { 
+      width:100%; 
+      border-collapse: collapse; 
+      margin-top:10px; 
+    }
+    th, td { 
+      border-bottom: 1px solid #eee; 
+      padding: 10px; 
+      text-align:left; 
+    }
+    th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+    }
+    .muted { color:#666; }
+    .text-success { color: #28a745; font-weight: bold; }
+    .text-danger { color: #dc3545; font-weight: bold; }
+    .text-warning { color: #fd7e14; font-weight: bold; }
+    .text-info { color: #17a2b8; font-weight: bold; }
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-weight: bold;
+    }
+    .badge-success { background-color: #28a745; color: white; }
+    .badge-danger { background-color: #dc3545; color: white; }
+    .badge-warning { background-color: #ffc107; color: #222; }
+    .badge-secondary { background-color: #6c757d; color: white; }
+    .badge-info { background-color: #17a2b8; color: white; }
+    .payment-row { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 8px; 
+      border-bottom: 1px solid #eee; 
+    }
+    .payment-row:last-child { border-bottom: none; }
+    .coverage-box {
+      background: linear-gradient(135deg, #fff3cd, #fff9e6);
+      border-left: 4px solid #fd7e14;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 8px;
+    }
+    .progress-bar {
+      background-color: #e9ecef;
+      border-radius: 10px;
+      height: 10px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+    .progress-fill {
+      background-color: #28a745;
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+    .warning-box {
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+    .info-box {
+      background-color: #d1ecf1;
+      border: 1px solid #bee5eb;
+      color: #0c5460;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Invoice {{ invoice.invoice_number }}</h2>
+    
+    <!-- Status Badge and Company Info -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <div>
+        {% if invoice.status == "paid" %}
+          <span class="badge badge-success">PAID</span>
+        {% elif invoice.status == "credit" %}
+          <span class="badge badge-warning">CREDIT</span>
+        {% elif invoice.status == "overdue" %}
+          <span class="badge badge-danger">OVERDUE</span>
+        {% elif invoice.status == "partial" %}
+          <span class="badge badge-warning">PARTIALLY PAID</span>
+        {% elif invoice.status == "sent" %}
+          <span class="badge badge-secondary">SENT</span>
+        {% else %}
+          <span class="badge badge-secondary">{{ invoice.get_status_display }}</span>
+        {% endif %}
+        
+        {% if invoice.company %}
+          <span class="muted" style="margin-left: 10px;">
+            Company: <a href="{% url 'billing:company_detail' invoice.company.pk %}">{{ invoice.company.business_name|default:invoice.company.name }}</a>
+          </span>
+        {% endif %}
+      </div>
+      
+      <!-- Days until due / overdue warning -->
+      {% if days_until_due is not None %}
+        {% if days_until_due > 0 %}
+          <span class="badge badge-info">{{ days_until_due }} days until due</span>
+        {% elif days_until_due == 0 %}
+          <span class="badge badge-warning">Due today</span>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <div style="margin: 12px 0;">
+      <a class="btn" href="{% url 'billing:invoice_list' %}">← Back to Invoices</a>
+      <a class="btn" href="{% url 'billing:invoice_edit' invoice.pk %}">Edit Invoice</a>
+      <a class="btn btn-info" href="{% url 'billing:invoice_pdf' invoice.pk %}" target="_blank">Download PDF</a>
+      
+      {% if invoice.amount_due > 0 %}
+        <a class="btn btn-success" href="{% url 'billing:invoice_add_payment' invoice.pk %}">Record Payment</a>
+      {% endif %}
+      
+      {% if invoice.amount_due > 0 and not invoice.is_paid %}
+        <a class="btn btn-warning" href="{% url 'billing:invoice_mark_paid' invoice.pk %}" 
+           onclick="return confirm('Mark this invoice as fully paid? This will create a payment record for R{{ invoice.amount_due|floatformat:2 }}.');">
+          Mark as Paid
+        </a>
+      {% endif %}
+      
+      {% if invoice.company %}
+        <a class="btn" href="{% url 'billing:company_detail' invoice.company.pk %}">View Company</a>
+      {% endif %}
+    </div>
+
+    <!-- Overdue Warning -->
+    {% if is_overdue %}
+      <div class="warning-box">
+        <strong>⚠️ OVERDUE INVOICE</strong><br>
+        This invoice was due on {{ invoice.due_date }}. 
+        Please process payment immediately to avoid service suspension.
+        {% if days_until_due and days_until_due < 0 %}
+          Suspension will occur on {{ invoice.due_date|date:"Y-m-d"|add:"7" }}.
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <!-- Credit Coverage Information -->
+    {% if coverage_info %}
+      <div class="coverage-box">
+        <strong>💰 Credit Coverage</strong><br>
+        <div style="margin-top: 10px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+            <span>Available Credit:</span>
+            <strong class="text-warning">R{{ invoice.credit_amount|floatformat:2 }}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+            <span>Monthly Rate:</span>
+            <strong>R{{ invoice.company.monthly_rate|floatformat:2 }}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+            <span>Months Covered:</span>
+            <strong>{{ coverage_info.months }} months</strong>
+          </div>
+          {% if coverage_info.until %}
+          <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+            <span>Covered Until:</span>
+            <strong>{{ coverage_info.until|date:"F Y" }}</strong>
+          </div>
+          {% endif %}
+        </div>
+        
+<!-- Progress bar for coverage -->
+{% if coverage_info.months %}
+<div style="margin-top: 15px;">
+  <div class="progress-bar">
+    {% with percentage=coverage_info.months|div:12|mul:100 %}
+      <div class="progress-fill" style="width: {{ percentage|floatformat:0 }}%"></div>
+    {% endwith %}
+  </div>
+  <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+    <small class="muted">{{ coverage_info.months|floatformat:1 }} months covered</small>
+    <small class="muted">12 months view</small>
+  </div>
+</div>
+{% endif %}
+      </div>
+    {% endif %}
+
+    <!-- Next Invoice Preview -->
+    {% if next_preview %}
+      <div class="info-box">
+        <strong>📅 Next Invoice Preview</strong><br>
+        <div style="margin-top: 10px;">
+          <div style="display: flex; justify-content: space-between;">
+            <span>Monthly subscription:</span>
+            <span>R{{ next_preview.monthly_rate|floatformat:2 }}</span>
+          </div>
+          {% if next_preview.credit_available > 0 %}
+          <div style="display: flex; justify-content: space-between; color: #28a745;">
+            <span>Credit to apply:</span>
+            <span>-R{{ next_preview.monthly_rate|floatformat:2 }}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-weight: bold; border-top: 1px dashed #ccc; margin-top: 5px; padding-top: 5px;">
+            <span>Amount due:</span>
+            <span class="{% if next_preview.will_be_covered %}text-success{% else %}text-danger{% endif %}">
+              R{{ next_preview.next_amount_due|floatformat:2 }}
+            </span>
+          </div>
+          <div class="muted" style="margin-top: 5px;">
+            {% if next_preview.will_be_covered %}
+              ✅ Next invoice fully covered by credit
+            {% else %}
+              ⚠️ Partial credit: {{ next_preview.months_covered|floatformat:2 }} months covered
+            {% endif %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="grid-2">
+      <!-- Bill To Section -->
+      <div class="box">
+        <strong>Bill To</strong><br>
+        {{ invoice.bill_to_name }}<br>
+        {% if invoice.bill_to_company %}{{ invoice.bill_to_company }}<br>{% endif %}
+        {% if invoice.bill_to_email %}{{ invoice.bill_to_email }}<br>{% endif %}
+        {% if invoice.bill_to_phone %}{{ invoice.bill_to_phone }}<br>{% endif %}
+        {% if invoice.bill_to_address %}<pre style="margin:8px 0; white-space: pre-wrap;">{{ invoice.bill_to_address }}</pre>{% endif %}
+      </div>
+
+      <!-- Dates Section -->
+      <div class="box">
+        <strong>Dates</strong><br>
+        Invoice Date: {{ invoice.invoice_date }}<br>
+        Due Date: {{ invoice.due_date }}<br>
+        {% if invoice.period_start and invoice.period_end %}
+          Period: {{ invoice.period_start|date:"d M Y" }} - {{ invoice.period_end|date:"d M Y" }}<br>
+        {% endif %}
+        {% if days_until_due is not None and days_until_due > 0 %}
+          <span class="text-info">{{ days_until_due }} days until due</span>
+        {% elif is_overdue %}
+          <span class="text-danger">Overdue by {{ invoice.due_date|timesince }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Items Section -->
+    <div class="box">
+      <strong>Items</strong>
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>Unit</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in invoice.items.all %}
+            <tr>
+              <td>{{ item.description }}</td>
+              <td>{{ item.qty }}</td>
+              <td>R{{ item.unit_price|floatformat:2 }}</td>
+              <td>R{{ item.line_total|floatformat:2 }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="4" class="muted">No items yet. <a href="/admin/billing/invoice/{{ invoice.id }}/change/">Add items in admin</a>.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div style="margin-top:12px; text-align: right;">
+        <div>Subtotal: <strong>R{{ invoice.subtotal|floatformat:2 }}</strong></div>
+        <div>Paid: <strong>R{{ invoice.amount_paid|floatformat:2 }}</strong></div>
+        
+        {% if invoice.credit_amount > 0 %}
+          <div class="text-warning">Credit: <strong>R{{ invoice.credit_amount|floatformat:2 }}</strong></div>
+          <div class="text-success">Amount Due: <strong>R0.00</strong></div>
+        {% else %}
+          <div class="{% if invoice.amount_due > 0 %}text-danger{% else %}text-success{% endif %}">
+            Amount Due: <strong>R{{ invoice.amount_due|floatformat:2 }}</strong>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Statement Section -->
+    <div class="box">
+      <strong>Statement</strong><br>
+      
+      <!-- Payment History -->
+      {% if payments %}
+        <div style="margin-top: 10px; margin-bottom: 15px;">
+          <strong>Payment History:</strong>
+          {% for payment in payments %}
+            <div class="payment-row">
+              <div>
+                {{ payment.payment_date|date:"Y-m-d" }} - 
+                <strong>R{{ payment.amount|floatformat:2 }}</strong>
+                ({{ payment.get_method_display }})
+                {% if payment.reference %} - Ref: {{ payment.reference }}{% endif %}
+                {% if payment.note %}<br><span class="muted">{{ payment.note }}</span>{% endif %}
+              </div>
+              <div>
+                <a href="#" onclick="if(confirm('Delete this payment?')) document.getElementById('delete-payment-{{ payment.id }}').submit(); return false;" 
+                   class="btn btn-sm btn-danger">Delete</a>
+                <form id="delete-payment-{{ payment.id }}" method="post" 
+                      action="{% url 'billing:invoice_delete_payment' invoice.pk payment.pk %}" style="display:none;">
+                  {% csrf_token %}
+                </form>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Last Payment (if not shown above) -->
+      {% if invoice.last_payment and payments|length == 1 %}
+        <!-- Already shown above -->
+      {% elif invoice.last_payment %}
+        <div style="margin-top: 10px;">
+          <strong>Last payment:</strong>
+          R{{ invoice.last_payment.amount|floatformat:2 }} on {{ invoice.last_payment.payment_date|date:"Y-m-d" }}
+          ({{ invoice.last_payment.get_method_display }})
+          {% if invoice.last_payment.reference %} - Ref: {{ invoice.last_payment.reference }}{% endif %}
+          {% if invoice.last_payment.note %}<br><span class="muted">{{ invoice.last_payment.note }}</span>{% endif %}
+        </div>
+      {% endif %}
+      
+      <!-- Clear Balance Status -->
+      <div style="margin-top: 15px; padding-top: 10px; border-top: 2px solid #eee;">
+        {% if invoice.credit_amount > 0 %}
+          <div class="text-warning">
+            <strong>STATUS: CREDIT</strong> - Client has credit of <strong>R{{ invoice.credit_amount|floatformat:2 }}</strong>
+            {% if coverage_info %}
+              <br><small>(Covers {{ coverage_info.months }} months until {{ coverage_info.until|date:"F Y" }})</small>
+            {% endif %}
+          </div>
+        {% elif invoice.amount_due > 0 %}
+          <div class="text-danger">
+            <strong>STATUS: OWES</strong> - Balance due of <strong>R{{ invoice.amount_due|floatformat:2 }}</strong>
+            {% if is_overdue %}
+              <br><span class="text-danger">⚠️ This invoice is OVERDUE</span>
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="text-success">
+            <strong>STATUS: PAID</strong> - Invoice settled in full
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if invoice.notes %}
+    <div class="box">
+      <strong>Notes</strong>
+      <pre style="margin:8px 0; white-space: pre-wrap;">{{ invoice.notes }}</pre>
+    </div>
+    {% endif %}
+
+    <!-- Quick Stats -->
+    <div style="display: flex; gap: 20px; margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+      <div>
+        <span class="muted">Total Invoiced:</span><br>
+        <strong>R{{ invoice.total|floatformat:2 }}</strong>
+      </div>
+      <div>
+        <span class="muted">Total Paid:</span><br>
+        <strong>R{{ invoice.amount_paid|floatformat:2 }}</strong>
+      </div>
+      <div>
+        <span class="muted">{% if invoice.credit_amount > 0 %}Credit{% else %}Balance{% endif %}:</span><br>
+        <span class="{% if invoice.credit_amount > 0 %}text-warning{% elif invoice.amount_due > 0 %}text-danger{% else %}text-success{% endif %}">
+          <strong>R{% if invoice.credit_amount > 0 %}{{ invoice.credit_amount|floatformat:2 }}{% else %}{{ invoice.amount_due|floatformat:2 }}{% endif %}</strong>
+        </span>
+      </div>
+      {% if invoice.company %}
+      <div>
+        <span class="muted">Monthly Rate:</span><br>
+        <strong>R{{ invoice.company.monthly_rate|floatformat:2 }}</strong>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!doctype html>
+{% load billing_extras %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% if mode == "edit" %}Edit{% else %}Create{% endif %} Invoice</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      padding: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: #f8f9fa;
+    }
+    
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h2 {
+      color: #333;
+      margin-top: 0;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+    
+    h3 {
+      color: #555;
+      margin: 20px 0 10px 0;
+      font-size: 1.2em;
+    }
+    
+    .btn { 
+      display:inline-block; 
+      padding:12px 24px; 
+      border:none; 
+      text-decoration:none; 
+      border-radius:8px; 
+      color:white; 
+      margin-right:8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .btn-primary {
+      background-color: #007bff;
+    }
+    
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+    
+    .btn-secondary {
+      background-color: #6c757d;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #545b62;
+    }
+    
+    .btn-success {
+      background-color: #28a745;
+    }
+    
+    .btn-success:hover {
+      background-color: #218838;
+    }
+    
+    .btn-info {
+      background-color: #17a2b8;
+    }
+    
+    .btn-info:hover {
+      background-color: #138496;
+    }
+    
+    .box { 
+      border:1px solid #ddd; 
+      border-radius:10px; 
+      padding:20px; 
+      margin:20px 0;
+      background-color: #fff;
+    }
+    
+    .credit-box {
+      background-color: #fff3cd;
+      border: 1px solid #ffeeba;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    
+    label { 
+      display:block; 
+      margin-top:15px; 
+      margin-bottom:5px;
+      font-weight:600; 
+      color: #333;
+    }
+    
+    input, textarea, select { 
+      width:100%; 
+      padding:12px; 
+      border:2px solid #e0e0e0; 
+      border-radius:8px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+      box-sizing: border-box;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+    
+    .help-text {
+      color: #666;
+      font-size: 0.9em;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    
+    .errorlist {
+      color: #dc3545;
+      list-style: none;
+      padding: 0;
+      margin: 5px 0;
+      font-size: 0.9em;
+    }
+    
+    .warning {
+      color: #856404;
+      background-color: #fff3cd;
+      border: 1px solid #ffeeba;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+    }
+    
+    .button-group {
+      margin-top: 30px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .info-box {
+      background-color: #e7f3ff;
+      border-left: 4px solid #007bff;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+    
+    .info-box a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .info-box a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Style for Django form paragraphs */
+    .box p {
+      margin: 0 0 15px 0;
+    }
+    
+    /* Help text from form fields */
+    .helptext {
+      color: #666;
+      font-size: 0.9em;
+      display: block;
+      margin-top: 5px;
+    }
+    
+    /* Required field indicator */
+    .required label:after {
+      content: " *";
+      color: #dc3545;
+    }
+    
+    .company-select {
+      margin-bottom: 10px;
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+    
+    .form-col {
+      flex: 1;
+    }
+    
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+    }
+    
+    .checkbox-row input[type="checkbox"] {
+      width: auto;
+      margin-right: 10px;
+    }
+    
+    .checkbox-row label {
+      display: inline;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>{% if mode == "edit" %}Edit{% else %}Create New{% endif %} Invoice</h2>
+
+    {% if mode == "create" and form.company.value %}
+      {% with company_id=form.company.value %}
+        {% if company_id %}
+          {% load billing_extras %}
+          {% with company=form.company.queryset.get pk=company_id %}
+            {% if company.get_credit_balance > 0 %}
+              <div class="credit-box">
+                <strong>💰 Credit Available</strong><br>
+                {% with credit=company.get_credit_balance %}
+                  {% with months=credit|div:company.monthly_rate %}
+                    <p style="margin: 10px 0;">
+                      This client has <strong>R{{ credit|floatformat:2 }}</strong> credit available,
+                      covering approximately <strong>{{ months|floatformat:2 }} months</strong> of service.
+                    </p>
+                    <p class="help-text">
+                      Credit will be automatically applied if you check the "Apply available credit" option below.
+                    </p>
+                  {% endwith %}
+                {% endwith %}
+              </div>
+            {% endif %}
+          {% endwith %}
+        {% endif %}
+      {% endwith %}
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="box">
+        {% if form.non_field_errors %}
+          <div class="errorlist">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        {% if form.warnings %}
+          <div class="warning">
+            {% for warning in form.warnings %}
+              <div>⚠️ {{ warning }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <!-- Main Fields -->
+        {% for field in form %}
+          {% if field.name not in 'apply_credit period_start period_end' %}
+            <div class="{% if field.field.required %}required{% endif %}">
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.help_text %}
+                <div class="helptext">{{ field.help_text }}</div>
+              {% endif %}
+              {% if field.errors %}
+                <div class="errorlist">{{ field.errors }}</div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        <!-- Subscription Period Fields -->
+        <h3>Subscription Period (Optional)</h3>
+        <div class="form-row">
+          <div class="form-col">
+            <label for="{{ form.period_start.id_for_label }}">Period Start:</label>
+            {{ form.period_start }}
+            <div class="help-text">{{ form.period_start.help_text }}</div>
+          </div>
+          <div class="form-col">
+            <label for="{{ form.period_end.id_for_label }}">Period End:</label>
+            {{ form.period_end }}
+            <div class="help-text">{{ form.period_end.help_text }}</div>
+          </div>
+        </div>
+
+        <!-- Credit Application Checkbox -->
+        <div class="checkbox-row">
+          {{ form.apply_credit }}
+          <label for="{{ form.apply_credit.id_for_label }}">
+            <strong>{{ form.apply_credit.label }}</strong>
+          </label>
+        </div>
+        <div class="help-text">{{ form.apply_credit.help_text }}</div>
+
+        <div class="help-text" style="margin-top: 15px;">
+          <small>Note: Invoice number will be auto-generated (YG-YYYY-XXXX)</small>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button class="btn btn-primary" type="submit">
+          {% if mode == "edit" %}Update{% else %}Create{% endif %} Invoice
+        </button>
+        <a class="btn btn-secondary" href="{% url 'billing:invoice_list' %}">Cancel</a>
+        {% if mode == "edit" %}
+          <a class="btn btn-info" href="{% url 'billing:invoice_detail' invoice.pk %}">View Invoice</a>
+        {% endif %}
+      </div>
+    </form>
+
+    {% if mode == "edit" %}
+    <div class="info-box">
+      <strong>📋 Next Steps:</strong><br><br>
+      
+      <div style="margin-bottom: 10px;">
+        <strong>1. Add Invoice Items:</strong><br>
+        Add line items to this invoice. 
+        <a href="/admin/billing/invoice/{{ invoice.id }}/change/" target="_blank">
+          Click here to add items in Admin Panel →
+        </a>
+      </div>
+      
+      <div style="margin-bottom: 10px;">
+        <strong>2. Record Payments:</strong><br>
+        When payment is received, 
+        <a href="{% url 'billing:invoice_add_payment' invoice.pk %}">
+          click here to record a payment →
+        </a>
+      </div>
+      
+      <div style="margin-bottom: 10px;">
+        <strong>3. Credit Status:</strong><br>
+        {% if invoice.credit_amount > 0 %}
+          Current credit: <strong class="text-warning">R{{ invoice.credit_amount|floatformat:2 }}</strong>
+          (covers {{ invoice.months_covered|floatformat:2 }} months)
+        {% else %}
+          No credit available.
+        {% endif %}
+      </div>
+      
+      <div>
+        <strong>4. Download PDF:</strong><br>
+        Once items are added, you can 
+        <a href="{% url 'billing:invoice_pdf' invoice.pk %}" target="_blank">
+          download the invoice PDF →
+        </a>
+      </div>
+    </div>
+    {% else %}
+    <div class="info-box">
+      <strong>ℹ️ Creating a New Invoice:</strong><br><br>
+      <ol style="margin: 0; padding-left: 20px;">
+        <li>Select a company from the dropdown</li>
+        <li>Set invoice date and due date</li>
+        <li>Optionally set the subscription period</li>
+        <li>Check "Apply available credit" to automatically use any credit balance</li>
+        <li>Add any notes if needed</li>
+        <li>After creation, you'll need to add invoice items in the admin panel</li>
+        <li>Record payments when received</li>
+      </ol>
+      
+      <p style="margin-top: 15px; margin-bottom: 0;">
+        <strong>💡 Tip:</strong> For monthly subscriptions, the period will auto-fill to the month 
+        of the invoice date. Credit balances will be shown when you select a company.
+      </p>
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date().toISOString().split('T')[0];
+      
+      // Auto-fill dates
+      const invoiceDate = document.querySelector('[name="invoice_date"]');
+      const dueDate = document.querySelector('[name="due_date"]');
+      const periodStart = document.querySelector('[name="period_start"]');
+      const periodEnd = document.querySelector('[name="period_end"]');
+      
+      if (invoiceDate && !invoiceDate.value) {
+        invoiceDate.value = today;
+      }
+      
+      if (dueDate && !dueDate.value) {
+        const thirtyDaysLater = new Date();
+        thirtyDaysLater.setDate(thirtyDaysLater.getDate() + 30);
+        dueDate.value = thirtyDaysLater.toISOString().split('T')[0];
+      }
+      
+      // Auto-fill period from invoice date
+      if (periodStart && !periodStart.value && invoiceDate && invoiceDate.value) {
+        const invDate = new Date(invoiceDate.value);
+        const firstDay = new Date(invDate.getFullYear(), invDate.getMonth(), 1);
+        periodStart.value = firstDay.toISOString().split('T')[0];
+        
+        // Last day of month
+        const lastDay = new Date(invDate.getFullYear(), invDate.getMonth() + 1, 0);
+        periodEnd.value = lastDay.toISOString().split('T')[0];
+      }
+      
+      // Update period when invoice date changes
+      if (invoiceDate) {
+        invoiceDate.addEventListener('change', function() {
+          if (periodStart && !periodStart.value) {
+            const invDate = new Date(this.value);
+            const firstDay = new Date(invDate.getFullYear(), invDate.getMonth(), 1);
+            periodStart.value = firstDay.toISOString().split('T')[0];
+          }
+          if (periodEnd && !periodEnd.value) {
+            const invDate = new Date(this.value);
+            const lastDay = new Date(invDate.getFullYear(), invDate.getMonth() + 1, 0);
+            periodEnd.value = lastDay.toISOString().split('T')[0];
+          }
+        });
+      }
+      
+      // Show credit info when company changes
+      const companySelect = document.querySelector('[name="company"]');
+      if (companySelect) {
+        companySelect.addEventListener('change', function() {
+          // In a real implementation, you might want to fetch credit info via AJAX
+          // For now, we'll just show a message that the page needs to reload
+          if (this.value) {
+            console.log('Company selected:', this.value);
+            // You could add an AJAX call here to fetch credit balance
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

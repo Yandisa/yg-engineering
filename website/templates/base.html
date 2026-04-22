@@ -351,5 +351,13 @@
   </script>
 
   {% block extra_body %}{% endblock %}
+
+  <!-- Floating Admin Button -->
+  {% if user.is_authenticated %}
+  <a href="/dashboard/" style="position:fixed;bottom:28px;right:28px;background:#0d0d1a;color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,0.4);z-index:9999;font-size:1.3rem;" title="Dashboard">⚙️</a>
+  {% else %}
+  <a href="/accounts/login/" style="position:fixed;bottom:28px;right:28px;background:#0d0d1a;color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,0.4);z-index:9999;font-size:1.3rem;" title="Admin Login">🔐</a>
+  {% endif %}
+
 </body>
 </html>

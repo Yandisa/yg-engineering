@@ -1,0 +1,374 @@
+<!doctype html>
+{% load billing_extras %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ company.business_name|default:company.name }} - Company Details</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      padding: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #f8f9fa;
+    }
+    
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h2 {
+      color: #333;
+      margin-top: 0;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+    
+    .btn { 
+      display:inline-block; 
+      padding:10px 14px; 
+      border:1px solid #222; 
+      text-decoration:none; 
+      border-radius:8px; 
+      color:#222; 
+      margin-right:8px;
+      background-color: white;
+      transition: all 0.3s;
+    }
+    
+    .btn:hover {
+      background-color: #f0f0f0;
+    }
+    
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+    
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+    
+    .btn-success {
+      background-color: #28a745;
+      color: white;
+      border-color: #28a745;
+    }
+    
+    .btn-success:hover {
+      background-color: #218838;
+    }
+    
+    .btn-info {
+      background-color: #17a2b8;
+      color: white;
+      border-color: #17a2b8;
+    }
+    
+    .btn-info:hover {
+      background-color: #138496;
+    }
+    
+    .box { 
+      border:1px solid #ddd; 
+      border-radius:10px; 
+      padding:20px; 
+      margin:20px 0;
+      background-color: #fff;
+    }
+    
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .info-row {
+      display: flex;
+      margin: 10px 0;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .info-label {
+      font-weight: 600;
+      width: 150px;
+      color: #666;
+    }
+    
+    .info-value {
+      flex: 1;
+    }
+    
+    .stats-bar {
+      display: flex;
+      gap: 20px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    
+    .stat-card {
+      background: #f8f9fa;
+      padding: 15px 25px;
+      border-radius: 8px;
+      flex: 1;
+      min-width: 150px;
+      text-align: center;
+    }
+    
+    .stat-label {
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    
+    .text-success { color: #28a745; }
+    .text-danger { color: #dc3545; }
+    .text-warning { color: #fd7e14; }
+    .text-info { color: #17a2b8; }
+    
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      font-weight: bold;
+      color: white;
+    }
+    
+    .badge-success { background-color: #28a745; }
+    .badge-warning { background-color: #ffc107; color: #222; }
+    .badge-secondary { background-color: #6c757d; }
+    
+    table { 
+      width:100%; 
+      border-collapse: collapse; 
+      margin-top:16px;
+    }
+    
+    th, td { 
+      border-bottom: 1px solid #ddd; 
+      padding: 12px; 
+      text-align:left; 
+    }
+    
+    th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+    }
+    
+    .progress-bar {
+      background-color: #e9ecef;
+      border-radius: 10px;
+      height: 10px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+    
+    .progress-fill {
+      background-color: #28a745;
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2 style="border-bottom: none; margin: 0;">{{ company.business_name|default:company.name }}</h2>
+      <div>
+        <span class="badge {% if company.is_active %}badge-success{% else %}badge-secondary{% endif %}">
+          {{ company.is_active|yesno:"Active,Inactive" }}
+        </span>
+      </div>
+    </div>
+
+    <div style="margin: 12px 0;">
+      <a class="btn" href="{% url 'billing:company_list' %}">← Back to Companies</a>
+      <a class="btn btn-primary" href="{% url 'billing:company_edit' company.pk %}">Edit Company</a>
+      <a class="btn btn-success" href="{% url 'billing:invoice_create' %}?company={{ company.pk }}">Create Invoice</a>
+      <a class="btn btn-info" href="{% url 'billing:invoice_list' %}?q={{ company.business_name|default:company.name }}">View Invoices</a>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-label">Total Invoiced</div>
+        <div class="stat-value">R{{ total_billed|floatformat:2 }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Paid</div>
+        <div class="stat-value text-success">R{{ total_paid|floatformat:2 }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Credit Balance</div>
+        <div class="stat-value {% if total_credit > 0 %}text-warning{% endif %}">
+          R{{ total_credit|floatformat:2 }}
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Monthly Rate</div>
+        <div class="stat-value">R{{ company.monthly_rate|floatformat:2 }}</div>
+      </div>
+    </div>
+
+    <!-- Credit Coverage -->
+    {% if total_credit > 0 %}
+    <div class="box" style="background: linear-gradient(135deg, #fff3cd, #fff9e6);">
+      <strong>💰 Credit Coverage</strong>
+      <div style="margin-top: 15px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <span>Credit Balance:</span>
+          <strong class="text-warning">R{{ total_credit|floatformat:2 }}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <span>Months Covered:</span>
+          <strong>{{ coverage_months }} months</strong>
+        </div>
+        {% if coverage_until %}
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <span>Covered Until:</span>
+          <strong>{{ coverage_until|date:"F Y" }}</strong>
+        </div>
+        {% endif %}
+        
+        <!-- Progress bar -->
+        <div style="margin-top: 15px;">
+          <div class="progress-bar">
+            {% with percentage=coverage_months|div:12|mul:100 %}
+              <div class="progress-fill" style="width: {{ percentage|floatformat:0 }}%"></div>
+            {% endwith %}
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+            <small class="muted">{{ coverage_months|floatformat:1 }} months covered</small>
+            <small class="muted">12 months view</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="grid-2">
+      <!-- Contact Information -->
+      <div class="box">
+        <strong>Contact Information</strong>
+        <div class="info-row">
+          <span class="info-label">Contact Person:</span>
+          <span class="info-value">{{ company.name }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Business Name:</span>
+          <span class="info-value">{{ company.business_name|default:"-" }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Email:</span>
+          <span class="info-value">{{ company.email|default:"-" }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Phone:</span>
+          <span class="info-value">{{ company.phone|default:"-" }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Address:</span>
+          <span class="info-value">{{ company.address|default:"-"|linebreaksbr }}</span>
+        </div>
+      </div>
+
+      <!-- Subscription Settings -->
+      <div class="box">
+        <strong>Subscription Settings</strong>
+        <div class="info-row">
+          <span class="info-label">Monthly Rate:</span>
+          <span class="info-value">R{{ company.monthly_rate|floatformat:2 }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Start Date:</span>
+          <span class="info-value">{{ company.subscription_start_date|default:"-" }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Auto-generate:</span>
+          <span class="info-value">{{ company.auto_generate_invoices|yesno:"Yes,No" }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Total Invoices:</span>
+          <span class="info-value">{{ invoice_count }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Invoices -->
+    <div class="box">
+      <strong>Recent Invoices</strong>
+      {% if invoices %}
+        <table>
+          <thead>
+            <tr>
+              <th>Invoice #</th>
+              <th>Date</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>Total</th>
+              <th>Paid</th>
+              <th>Balance</th>
+              <th class="muted">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for inv in invoices|slice:":10" %}
+            <tr>
+              <td><a href="{% url 'billing:invoice_detail' inv.pk %}">{{ inv.invoice_number }}</a></td>
+              <td>{{ inv.invoice_date|date:"Y-m-d" }}</td>
+              <td>{{ inv.due_date|date:"Y-m-d" }}</td>
+              <td>
+                {% if inv.status == "paid" %}
+                  <span class="badge badge-success">Paid</span>
+                {% elif inv.status == "credit" %}
+                  <span class="badge badge-warning">Credit</span>
+                {% elif inv.status == "overdue" %}
+                  <span class="badge badge-danger">Overdue</span>
+                {% else %}
+                  <span class="badge badge-secondary">{{ inv.get_status_display }}</span>
+                {% endif %}
+              </td>
+              <td>R{{ inv.total|floatformat:2 }}</td>
+              <td>R{{ inv.amount_paid|floatformat:2 }}</td>
+              <td class="{% if inv.credit_amount > 0 %}text-warning{% elif inv.amount_due > 0 %}text-danger{% endif %}">
+                {% if inv.credit_amount > 0 %}
+                  (R{{ inv.credit_amount|floatformat:2 }}) Credit
+                {% else %}
+                  R{{ inv.amount_due|floatformat:2 }}
+                {% endif %}
+              </td>
+              <td>
+                <a class="btn btn-sm" href="{% url 'billing:invoice_detail' inv.pk %}">View</a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="8" class="muted">No invoices yet</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% if invoices.count > 10 %}
+          <div style="margin-top: 10px; text-align: right;">
+            <a href="{% url 'billing:invoice_list' %}?company={{ company.pk }}">View all {{ invoice_count }} invoices →</a>
+          </div>
+        {% endif %}
+      {% else %}
+        <p class="muted">No invoices yet. <a href="{% url 'billing:invoice_create' %}?company={{ company.pk }}">Create first invoice</a></p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

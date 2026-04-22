@@ -383,3 +383,12 @@ def terms(request):
 def privacy(request):
     """Privacy Policy page"""
     return render(request, "privacy.html")
+
+# -----------------------------------------------------------------------------
+# Admin dashboard (login required)
+# -----------------------------------------------------------------------------
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def dashboard(request):
+    return render(request, 'dashboard.html')

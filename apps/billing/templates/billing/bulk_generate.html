@@ -1,0 +1,382 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Generate Monthly Invoices</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      padding: 24px;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #f8f9fa;
+    }
+    
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h2 {
+      color: #333;
+      margin-top: 0;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+    
+    h3 {
+      color: #555;
+      margin: 20px 0 10px 0;
+      font-size: 1.2em;
+    }
+    
+    .btn { 
+      display:inline-block; 
+      padding:12px 24px; 
+      border:none; 
+      text-decoration:none; 
+      border-radius:8px; 
+      color:white; 
+      margin-right:8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .btn-primary {
+      background-color: #007bff;
+    }
+    
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+    
+    .btn-secondary {
+      background-color: #6c757d;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #545b62;
+    }
+    
+    .btn-success {
+      background-color: #28a745;
+    }
+    
+    .btn-success:hover {
+      background-color: #218838;
+    }
+    
+    .btn-info {
+      background-color: #17a2b8;
+    }
+    
+    .btn-info:hover {
+      background-color: #138496;
+    }
+    
+    .box { 
+      border:1px solid #ddd; 
+      border-radius:10px; 
+      padding:20px; 
+      margin:20px 0;
+      background-color: #fff;
+    }
+    
+    .info-box {
+      background-color: #e7f3ff;
+      border-left: 4px solid #007bff;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    
+    .warning-box {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    
+    label { 
+      display:block; 
+      margin-top:15px; 
+      margin-bottom:5px;
+      font-weight:600; 
+      color: #333;
+    }
+    
+    input, textarea, select { 
+      width:100%; 
+      padding:12px; 
+      border:2px solid #e0e0e0; 
+      border-radius:8px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+      box-sizing: border-box;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+    
+    select[multiple] {
+      height: 200px;
+    }
+    
+    .help-text {
+      color: #666;
+      font-size: 0.9em;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    
+    .errorlist {
+      color: #dc3545;
+      list-style: none;
+      padding: 0;
+      margin: 5px 0;
+      font-size: 0.9em;
+    }
+    
+    .button-group {
+      margin-top: 30px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .stats-row {
+      display: flex;
+      gap: 20px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    
+    .stat-card {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      flex: 1;
+      min-width: 150px;
+      text-align: center;
+    }
+    
+    .stat-label {
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #007bff;
+    }
+    
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+    }
+    
+    .checkbox-row input[type="checkbox"] {
+      width: auto;
+      margin-right: 10px;
+    }
+    
+    .checkbox-row label {
+      display: inline;
+      margin: 0;
+    }
+    
+    .text-success { color: #28a745; }
+    .text-danger { color: #dc3545; }
+    .text-warning { color: #fd7e14; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Generate Monthly Invoices</h2>
+    
+    <div class="info-box">
+      <strong>ℹ️ How this works:</strong><br>
+      <p style="margin: 10px 0;">
+        This will generate invoices for the selected companies for the specified month.
+        Invoices will be created with:
+      </p>
+      <ul style="margin: 5px 0 0 20px;">
+        <li>Invoice date = selected date (usually 1st of month)</li>
+        <li>Due date = 30 days from invoice date</li>
+        <li>Monthly rate from each company's settings</li>
+        <li>Credit balances will be automatically applied if checked</li>
+      </ul>
+    </div>
+
+    <form method="post" action="{% url 'billing:generate_monthly_invoices' %}">
+      {% csrf_token %}
+      
+      <div class="box">
+        {% if form.non_field_errors %}
+          <div class="errorlist">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        <!-- Invoice Date -->
+        <label for="{{ form.invoice_date.id_for_label }}">Invoice Date:</label>
+        {{ form.invoice_date }}
+        <div class="help-text">{{ form.invoice_date.help_text }}</div>
+        {% if form.invoice_date.errors %}
+          <div class="errorlist">{{ form.invoice_date.errors }}</div>
+        {% endif %}
+
+        <!-- Due Date -->
+        <label for="{{ form.due_date.id_for_label }}">Due Date (Optional):</label>
+        {{ form.due_date }}
+        <div class="help-text">{{ form.due_date.help_text }}</div>
+        {% if form.due_date.errors %}
+          <div class="errorlist">{{ form.due_date.errors }}</div>
+        {% endif %}
+
+        <!-- Companies Selection -->
+        <label for="{{ form.companies.id_for_label }}">Select Companies:</label>
+        {{ form.companies }}
+        <div class="help-text">{{ form.companies.help_text }}</div>
+        {% if form.companies.errors %}
+          <div class="errorlist">{{ form.companies.errors }}</div>
+        {% endif %}
+
+        <!-- Credit Application Checkbox -->
+        <div class="checkbox-row">
+          {{ form.apply_credit }}
+          <label for="{{ form.apply_credit.id_for_label }}">
+            <strong>{{ form.apply_credit.label }}</strong>
+          </label>
+        </div>
+        <div class="help-text">{{ form.apply_credit.help_text }}</div>
+      </div>
+
+      <!-- Preview Stats (will be populated by JavaScript) -->
+      <div class="stats-row" id="preview-stats" style="display: none;">
+        <div class="stat-card">
+          <div class="stat-label">Selected Companies</div>
+          <div class="stat-value" id="selected-count">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Monthly Revenue</div>
+          <div class="stat-value" id="total-revenue">R0.00</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Companies with Credit</div>
+          <div class="stat-value" id="credit-count">0</div>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button type="submit" class="btn btn-success" onclick="return confirm('Generate invoices for the selected companies? This action cannot be undone.');">
+          Generate Invoices
+        </button>
+        <a href="{% url 'billing:invoice_list' %}" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+
+    <!-- Quick Stats about companies -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Active Companies</div>
+        <div class="stat-value">{{ form.companies.field.queryset.count }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Default Monthly Rate</div>
+        <div class="stat-value">R150.00</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Auto-generation</div>
+        <div class="stat-value">Enabled</div>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠️ Important:</strong>
+      <ul style="margin: 10px 0 0 20px;">
+        <li>Invoices will only be generated for companies that don't already have an invoice for this month</li>
+        <li>Credit balances will be automatically applied to reduce the amount due</li>
+        <li>Each invoice will include one line item for the monthly subscription</li>
+        <li>You can always edit invoices after generation</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const companySelect = document.getElementById('{{ form.companies.id_for_label }}');
+      const previewStats = document.getElementById('preview-stats');
+      const selectedCount = document.getElementById('selected-count');
+      const totalRevenue = document.getElementById('total-revenue');
+      const creditCount = document.getElementById('credit-count');
+      
+      if (companySelect) {
+        // Initial update
+        updatePreview();
+        
+        // Update on change
+        companySelect.addEventListener('change', updatePreview);
+      }
+      
+      function updatePreview() {
+        const selected = Array.from(companySelect.selectedOptions).map(opt => ({
+          value: opt.value,
+          text: opt.text,
+          hasCredit: opt.text.includes('Credit:')
+        }));
+        
+        if (selected.length > 0) {
+          previewStats.style.display = 'flex';
+          selectedCount.textContent = selected.length;
+          
+          // Count companies with credit
+          const creditCompanies = selected.filter(opt => opt.hasCredit).length;
+          creditCount.textContent = creditCompanies;
+          
+          // Calculate total revenue (assuming R150 per company)
+          // In a real implementation, you'd need to fetch actual rates via AJAX
+          totalRevenue.textContent = 'R' + (selected.length * 150).toFixed(2);
+        } else {
+          previewStats.style.display = 'none';
+        }
+      }
+      
+      // Auto-fill dates
+      const invoiceDate = document.querySelector('[name="invoice_date"]');
+      const dueDate = document.querySelector('[name="due_date"]');
+      
+      if (invoiceDate && !invoiceDate.value) {
+        const today = new Date();
+        const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        invoiceDate.value = firstOfMonth.toISOString().split('T')[0];
+      }
+      
+      if (dueDate && !dueDate.value && invoiceDate && invoiceDate.value) {
+        const date = new Date(invoiceDate.value);
+        date.setDate(date.getDate() + 30);
+        dueDate.value = date.toISOString().split('T')[0];
+      }
+      
+      // Update due date when invoice date changes
+      if (invoiceDate && dueDate) {
+        invoiceDate.addEventListener('change', function() {
+          const date = new Date(this.value);
+          date.setDate(date.getDate() + 30);
+          dueDate.value = date.toISOString().split('T')[0];
+        });
+      }
+    });
+  </script>
+</body>
+</html>
