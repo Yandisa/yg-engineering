@@ -182,3 +182,17 @@ LOGGING = {
         },
     },
 }
+
+# -----------------------------------------------------------------------------
+# Email — domains.co.za SMTP (SSL)
+# -----------------------------------------------------------------------------
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "cp72.domains.co.za"
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
+EMAIL_HOST_USER = "info@ygengineering.co.za"
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+DEFAULT_FROM_EMAIL = "info@ygengineering.co.za"
+SERVER_EMAIL = "info@ygengineering.co.za"
+CONTACT_RECIPIENT_EMAIL = "info@ygengineering.co.za"
