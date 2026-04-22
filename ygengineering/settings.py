@@ -12,6 +12,7 @@ SECRET_KEY = 'django-insecure-s96!5y-36np9&+qyms*+a1wg!#87^$mw(gk(vwp%7l923&@@03
 DEBUG = False
 
 ALLOWED_HOSTS = [
+    "*",
     "www.ygengineering.co.za",
     "ygengineering.co.za",
     "51.255.1.140",
@@ -196,3 +197,10 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = "info@ygengineering.co.za"
 SERVER_EMAIL = "info@ygengineering.co.za"
 CONTACT_RECIPIENT_EMAIL = "info@ygengineering.co.za"
+
+# -----------------------------------------------------------------------------
+# Persistent storage (Coolify mounts these as volumes)
+# -----------------------------------------------------------------------------
+import os
+DATABASES["default"]["NAME"] = os.getenv("DB_PATH", BASE_DIR / "db.sqlite3")
+MEDIA_ROOT = os.getenv("MEDIA_ROOT", os.path.join(BASE_DIR, "media"))
