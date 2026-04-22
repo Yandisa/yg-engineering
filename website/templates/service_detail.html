@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ service.title }} – YG Engineering{% endblock %}
+
+{% block content %}
+<!-- Service Hero -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center min-vh-100">
+      <div class="col-lg-8 mx-auto text-center">
+        <div class="hero-logo mb-4">
+          <div class="gear-container">
+            <i data-lucide="{{ service.icon }}" class="gear-icon"></i>
+          </div>
+        </div>
+
+        <h1 class="hero-title mb-4">
+          {{ service.title }}
+        </h1>
+
+        <p class="tagline-main mb-3">
+          Professional {{ service.title }} Solutions
+        </p>
+
+        <p class="tagline-sub mb-5">
+          {{ service.description }}
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#details" class="btn btn-primary btn-lg me-3">
+            <i data-lucide="info" class="me-2"></i>
+            Learn More
+          </a>
+          <a href="{% url 'contact' %}" class="btn btn-outline-primary btn-lg">
+            <i data-lucide="message-circle" class="me-2"></i>
+            Get Quote
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Service Details -->
+<section class="section-padding" id="details">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="service-card mb-5">
+          <div class="service-accent"></div>
+          <div class="d-flex align-items-center mb-4">
+            <i data-lucide="{{ service.icon }}" class="me-3" style="width: 3rem; height: 3rem; color: var(--gear-gold);"></i>
+            <h2 class="service-title mb-0">What's Included</h2>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <h4 class="capability-title mb-3">Key Features</h4>
+              <ul class="service-features">
+                {% for feature in service.features %}
+                  <li>
+                    <i data-lucide="check" class="me-2"></i>
+                    {{ feature }}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            <div class="col-md-6">
+              <h4 class="capability-title mb-3">Benefits</h4>
+              <ul class="service-features">
+                <li>
+                  <i data-lucide="zap" class="me-2"></i>
+                  Fast delivery and implementation
+                </li>
+                <li>
+                  <i data-lucide="shield-check" class="me-2"></i>
+                  Secure and reliable solutions
+                </li>
+                <li>
+                  <i data-lucide="trending-up" class="me-2"></i>
+                  Scalable for future growth
+                </li>
+                <li>
+                  <i data-lucide="headphones" class="me-2"></i>
+                  Ongoing support and maintenance
+                </li>
+                <li>
+                  <i data-lucide="users" class="me-2"></i>
+                  User-friendly interfaces
+                </li>
+                <li>
+                  <i data-lucide="smartphone" class="me-2"></i>
+                  Mobile-responsive design
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process Section -->
+<section class="section-padding bg-steel-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center mb-5">
+        <h2 class="section-title mb-4">Our Process</h2>
+        <p class="section-subtitle">
+          We follow a proven methodology to ensure your project is delivered on time and exceeds expectations.
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="capability-card text-center">
+          <div class="stat-number" style="font-size: 2rem;">1</div>
+          <h4 class="capability-title mb-2">Discovery</h4>
+          <p class="capability-text">
+            We understand your business needs, goals, and technical requirements.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="capability-card text-center">
+          <div class="stat-number" style="font-size: 2rem;">2</div>
+          <h4 class="capability-title mb-2">Planning</h4>
+          <p class="capability-text">
+            We create detailed project plans, wireframes, and technical specifications.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="capability-card text-center">
+          <div class="stat-number" style="font-size: 2rem;">3</div>
+          <h4 class="capability-title mb-2">Development</h4>
+          <p class="capability-text">
+            We build your solution using best practices and modern technologies.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="capability-card text-center">
+          <div class="stat-number" style="font-size: 2rem;">4</div>
+          <h4 class="capability-title mb-2">Launch</h4>
+          <p class="capability-text">
+            We deploy your solution and provide training and ongoing support.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Related Projects -->
+{% if related_projects %}
+<section class="section-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center mb-5">
+        <h2 class="section-title mb-4">Related Projects</h2>
+        <p class="section-subtitle">
+          See examples of similar work we've done for other clients.
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      {% for project in related_projects %}
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="project-card">
+            <div class="project-header mb-3">
+              <div>
+                <h3 class="project-title">{{ project.title }}</h3>
+                <div class="project-type">{{ project.project_type }}</div>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="project-status {{ project.status_badge_class }}">
+                  {{ project.status_badge_text }}
+                </span>
+                {% if project.link %}
+                  <a href="{{ project.link }}" target="_blank" class="ms-2">
+                    <i data-lucide="external-link" class="project-icon"></i>
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+
+            <p class="project-description mb-3">{{ project.description|truncatewords:15 }}</p>
+
+            {% if project.technologies.exists %}
+              <div class="project-technologies">
+                {% for tech in project.technologies.all %}
+                  <span class="tech-tag">{{ tech.name }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+<section class="section-padding bg-steel-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <h2 class="section-title mb-4">Ready to <span class="text-gear-gold">Get Started?</span></h2>
+        <p class="section-subtitle mb-5">
+          Let's discuss your {{ service.title|lower }} project and create a solution that drives results for your business.
+        </p>
+        <div class="d-flex flex-wrap gap-3 justify-content-center">
+          <a href="{% url 'contact' %}" class="btn btn-primary btn-lg">
+            <i data-lucide="message-circle" class="me-2"></i>
+            Start Your Project
+          </a>
+          <button class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#callbackModal">
+            <i data-lucide="phone" class="me-2"></i>
+            Request Callback
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

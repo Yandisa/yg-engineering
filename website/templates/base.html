@@ -1,0 +1,355 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+  <!-- Page title (override per template) -->
+  <title>{% block title %}YG Engineering – R150/Month Websites & Custom Software Development (South Africa){% endblock %}</title>
+
+  {% block meta %}
+    <!-- Default SEO (override this whole block in child templates) -->
+    <meta name="description" content="YG Engineering builds affordable small business websites for R150/month in South Africa (1–5 pages, mobile-friendly, hosting & SSL included). We also develop custom Django web apps, dashboards, and business systems.">
+    <meta name="keywords" content="R150 website South Africa, website R150 per month, affordable websites South Africa, cheap website South Africa, small business website South Africa, 5 page website South Africa, website hosting included, SSL included, web design South Africa, Django developer South Africa, custom software development, business systems, dashboards, CMMS, e-commerce development, booking system">
+    <meta name="robots" content="index,follow">
+    <meta name="google-site-verification" content="8daM2VLKG-HUi9djclCTQcr-eT4CaA5L2PmDgd4Gwbg" />
+    <meta property="fb:app_id" content="1382420306465462">
+
+    <link rel="canonical" href="https://www.ygengineering.co.za/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="YG Engineering – R150/Month Websites & Custom Software Development (South Africa)">
+    <meta property="og:description" content="Get a professional small business website for R150/month in South Africa. 1–5 pages, mobile-friendly, hosting & SSL included.">
+    <meta property="og:image" content="{% static 'images/logo.png' %}">
+    <meta property="og:url" content="https://www.ygengineering.co.za/">
+    <meta property="og:image:alt" content="Small Business Website for R150 per month by YG Engineering">
+
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="YG Engineering – R150/Month Websites & Custom Software Development (South Africa)">
+    <meta name="twitter:description" content="Affordable 1–5 page small business websites for R150/month in South Africa, plus custom Django web apps and business systems.">
+    <meta name="twitter:image" content="{% static 'images/logo.png' %}">
+  {% endblock %}
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=20260201">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
+
+  <!-- Organization JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"YG Engineering",
+    "url":"https://www.ygengineering.co.za/",
+    "logo":"https://www.ygengineering.co.za{% static 'images/logo.png' %}",
+    "contactPoint":[{
+      "@type":"ContactPoint",
+      "contactType":"sales",
+      "email":"ygengineeringza@gmail.com",
+      "telephone":"+27732261199"
+    }]
+  }
+  </script>
+
+  <!-- Service JSON-LD: R150/month Website Package -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Service",
+    "name":"Small Business Website Package (R150/month)",
+    "serviceType":"Website design and hosting",
+    "provider":{
+      "@type":"Organization",
+      "name":"YG Engineering",
+      "url":"https://www.ygengineering.co.za/"
+    },
+    "areaServed":{
+      "@type":"Country",
+      "name":"South Africa"
+    },
+    "description":"Affordable 1–5 page small business website for R150 per month in South Africa. Mobile-friendly design with hosting and SSL included. Month-to-month service with support for text and image updates (fair use).",
+    "offers":{
+      "@type":"Offer",
+      "price":"150",
+      "priceCurrency":"ZAR",
+      "url":"https://www.ygengineering.co.za/#website150",
+      "availability":"https://schema.org/InStock"
+    }
+  }
+  </script>
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body id="top">
+
+  <!-- Header -->
+  <header class="header-fixed">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+          <img src="{% static 'images/logo.png' %}" alt="YG Engineering Logo" height="50" class="me-2">
+          <span class="brand-text">YG<span class="text-gear-gold">ENGINEERING</span></span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+          <i data-lucide="menu"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'website_150' %}">Website R150</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'services' %}">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'projects' %}">Projects</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+            <li class="nav-item">
+              <button class="btn btn-primary ms-lg-3" data-bs-toggle="modal" data-bs-target="#callbackModal">
+                Request Callback
+              </button>
+            </li>
+            <li class="nav-item">
+  <a class="btn btn-outline-primary ms-lg-2" href="{% url 'website_150' %}">Get Website R150</a>
+</li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Messages -->
+    {% if messages %}
+      <div class="messages-container">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer section-padding bg-dark text-white">
+    <div class="container">
+      <div class="row">
+        <!-- Brand & About -->
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <div class="footer-brand mb-3 d-flex align-items-center">
+            <img src="{% static 'images/logo.png' %}" alt="YG Engineering Logo" class="footer-logo me-2">
+            <span class="footer-brand-text fw-bold">YG<span class="text-gear-gold">ENGINEERING</span></span>
+          </div>
+          <p class="footer-text">
+            We design and develop reliable, scalable, and innovative systems — websites, online stores, custom business applications, and dashboards.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+          <h4 class="footer-title mb-3">Quick Links</h4>
+          <ul class="footer-links list-unstyled">
+            <li><a href="{% url 'home' %}" class="text-white text-decoration-none">Home</a></li>
+            <li><a href="{% url 'about' %}" class="text-white text-decoration-none">About</a></li>
+            <li><a href="{% url 'website_150' %}" class="text-white text-decoration-none">Website R150</a></li>
+            <li><a href="{% url 'services' %}" class="text-white text-decoration-none">Services</a></li>
+            <li><a href="{% url 'projects' %}" class="text-white text-decoration-none">Projects</a></li>
+            <li><a href="{% url 'contact' %}" class="text-white text-decoration-none">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Services -->
+        <div class="col-lg-3 col-md-6">
+          <h4 class="footer-title mb-3">Our Services</h4>
+          <ul class="footer-links list-unstyled">
+            <li><a href="{% url 'services' %}" class="text-white text-decoration-none">Websites & Online Stores</a></li>
+            <li><a href="{% url 'services' %}" class="text-white text-decoration-none">Custom Web Applications</a></li>
+            <li><a href="{% url 'services' %}" class="text-white text-decoration-none">Business Systems</a></li>
+            <li><a href="{% url 'services' %}" class="text-white text-decoration-none">Data Dashboards</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="footer-divider border-secondary my-4">
+
+      <div class="footer-bottom text-center">
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="mb-0">&copy; 2025 YG Engineering. All rights reserved.</p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <div class="footer-legal-links">
+              <a href="{% url 'privacy' %}" class="text-white text-decoration-none me-3">Privacy Policy</a>
+              <a href="{% url 'terms' %}" class="text-white text-decoration-none">Terms & Conditions</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <a href="#top" id="backToTop" class="btn btn-primary back-to-top" aria-label="Back to top">
+    <i data-lucide="arrow-up"></i>
+  </a>
+
+  <!-- Request Callback Modal -->
+  <div class="modal fade" id="callbackModal" tabindex="-1" aria-labelledby="callbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="dialog" aria-modal="true">
+      <div class="modal-content bg-steel-gray">
+        <div class="modal-header">
+          <h5 class="modal-title" id="callbackModalLabel">Request a Callback</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form method="POST" action="{% url 'request_callback' %}">
+          {% csrf_token %}
+          <input type="hidden" name="page" value="{{ request.build_absolute_uri }}">
+
+          <div class="modal-body" id="callbackHelp">
+            <div class="mb-3">
+              <label class="form-label" for="cbName">Full Name</label>
+              <input
+                id="cbName"
+                name="full_name"
+                type="text"
+                class="form-control"
+                required
+                autocomplete="name"
+                minlength="2"
+                maxlength="100">
+            </div>
+
+            <div class="hp" style="display: none;">
+              <label class="form-label" for="company">Company</label>
+              <input
+                id="company"
+                name="company"
+                type="text"
+                class="form-control"
+                autocomplete="off">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="cbPhone">Phone</label>
+              <input
+                id="cbPhone"
+                name="phone"
+                type="tel"
+                inputmode="tel"
+                class="form-control"
+                placeholder="+27 ..."
+                required
+                autocomplete="tel"
+                pattern="^(?:\+27|0)\d{9}$"
+                maxlength="20">
+              <div class="form-text">Use +27 or 0 followed by 9 digits.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="cbBestTime">Best time to call (optional)</label>
+              <select id="cbBestTime" name="best_time" class="form-select" autocomplete="off">
+                <option value="">Select a time</option>
+                <option value="asap">Call me ASAP</option>
+                <option value="morning">Morning</option>
+                <option value="afternoon">Afternoon</option>
+                <option value="evening">Evening</option>
+              </select>
+            </div>
+
+            <div class="mb-0">
+              <label class="form-label" for="cbNotes">Notes (optional)</label>
+              <textarea
+                id="cbNotes"
+                name="notes"
+                class="form-control"
+                rows="3"
+                placeholder="Anything we should know?"
+                autocomplete="off"
+                maxlength="500"></textarea>
+            </div>
+
+            <div class="form-text mt-2" id="cbPrivacyNote">
+              We'll only use your number to return your call.
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" aria-describedby="cbPrivacyNote">Request Callback</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="{% static 'js/script.js' %}" defer></script>
+  <script>
+    // Initialize Lucide icons and handle page load
+    window.addEventListener('load', () => {
+      if (window.lucide) lucide.createIcons();
+
+      // Handle hash navigation
+      if (location.hash) {
+        const target = document.querySelector(location.hash);
+        if (target) {
+          setTimeout(() => {
+            target.scrollIntoView({behavior: 'smooth'});
+          }, 100);
+        }
+      }
+    });
+
+    // Back to top functionality
+    document.addEventListener("DOMContentLoaded", () => {
+      const backToTop = document.getElementById("backToTop");
+      const showAt = 300;
+
+      const toggleBackToTop = () => {
+        if (window.scrollY > showAt) backToTop.classList.add("show");
+        else backToTop.classList.remove("show");
+      };
+
+      toggleBackToTop();
+      window.addEventListener("scroll", toggleBackToTop);
+
+      backToTop.addEventListener("click", e => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      if (window.lucide) lucide.createIcons();
+    });
+
+    // Auto-hide messages after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+      const alerts = document.querySelectorAll('.alert');
+      alerts.forEach(alert => {
+        setTimeout(() => {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        }, 5000);
+      });
+    });
+  </script>
+
+  {% block extra_body %}{% endblock %}
+</body>
+</html>

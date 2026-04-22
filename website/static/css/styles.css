@@ -1,0 +1,1174 @@
+/* YG Engineering Design System - Enhanced Dark Industrial Theme */
+:root {
+    /* Colors */
+    --background: hsl(220, 13%, 9%);
+    --foreground: hsl(0, 0%, 98%);
+    --card: hsl(220, 13%, 11%);
+    --card-foreground: hsl(0, 0%, 98%);
+    --primary: #ac9f3dcc;
+    --primary-foreground: hsl(220, 13%, 9%);
+    --secondary: hsl(220, 13%, 15%);
+    --secondary-foreground: hsl(0, 0%, 98%);
+    --muted: hsl(220, 13%, 15%);
+    --muted-foreground: hsl(0, 0%, 65%);
+    --border: hsl(220, 13%, 20%);
+    --input: hsl(220, 13%, 15%);
+
+    /* Engineering-specific design tokens */
+    --gear-gold: hsla(45, 48%, 56%, 0.842);
+    --industrial-dark: hsl(220, 13%, 9%);
+    --steel-gray: hsl(220, 13%, 15%);
+    --machinery-border: hsl(220, 13%, 25%);
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(220, 13%, 9%) 0%, hsl(220, 13%, 15%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(45, 93%, 58%) 0%, hsl(45, 100%, 65%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(220, 13%, 11%) 0%, hsl(220, 13%, 13%) 100%);
+
+    /* Shadows */
+    --shadow-gear: 0 0 30px hsl(45, 93%, 58%, 0.3);
+    --shadow-card: 0 10px 40px hsl(220, 13%, 5%, 0.4);
+    --shadow-elevated: 0 20px 60px hsl(220, 13%, 5%, 0.6);
+
+    --radius: 0.75rem;
+}
+
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Rajdhani', sans-serif;
+    background-color: var(--background);
+    color: var(--foreground);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Typography */
+.font-engineering {
+    font-family: 'Orbitron', monospace;
+}
+
+.font-display {
+    font-family: 'Rajdhani', sans-serif;
+}
+
+/* Utility Classes */
+.text-gear-gold {
+    color: var(--gear-gold) !important;
+}
+
+.bg-steel-gray {
+    background-color: var(--steel-gray) !important;
+}
+
+.section-padding {
+    padding: 5rem 0;
+}
+
+/* Messages */
+.messages-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1060;
+    max-width: 400px;
+}
+
+.messages-container .alert {
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-card);
+}
+
+/* Header */
+.header-fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1050;
+    background: rgba(17, 21, 28, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--machinery-border);
+    transition: all 0.3s ease;
+}
+
+.navbar {
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    text-decoration: none;
+}
+
+.logo-img {
+    height: 2.5rem;
+    width: 2.5rem;
+    margin-right: 0.75rem;
+}
+
+.brand-text {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--foreground);
+}
+
+.navbar-nav .nav-link {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 500;
+    color: var(--foreground);
+    transition: color 0.3s ease;
+    margin: 0 0.5rem;
+    position: relative;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--gear-gold);
+}
+
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--gear-gold);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after {
+    width: 100%;
+}
+
+.navbar-toggler {
+    border: none;
+    background: none;
+    color: var(--foreground);
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+/* Hero Section */
+.hero-section {
+    min-height: 100vh;
+    background: var(--gradient-hero);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: 5rem;
+}
+
+.hero-patterns {
+    position: absolute;
+    inset: 0;
+    opacity: 0.05;
+}
+
+.pattern {
+    position: absolute;
+    border: 1px solid var(--gear-gold);
+    animation: float 6s ease-in-out infinite;
+}
+
+.pattern-1 {
+    top: 5rem;
+    left: 2.5rem;
+    width: 8rem;
+    height: 8rem;
+    transform: rotate(45deg);
+    animation-delay: 0s;
+}
+
+.pattern-2 {
+    top: 10rem;
+    right: 5rem;
+    width: 6rem;
+    height: 6rem;
+    animation-delay: 2s;
+}
+
+.pattern-3 {
+    bottom: 10rem;
+    left: 5rem;
+    width: 4rem;
+    height: 4rem;
+    transform: rotate(12deg);
+    animation-delay: 4s;
+}
+
+.pattern-4 {
+    bottom: 5rem;
+    right: 2.5rem;
+    width: 10rem;
+    height: 10rem;
+    transform: rotate(45deg);
+    animation-delay: 1s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+.hero-logo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.gear-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4rem;
+}
+
+.gear-icon {
+    width: 7rem;
+    height: 7rem;
+    color: var(--gear-gold);
+    animation: spin 20s linear infinite;
+    filter: drop-shadow(var(--shadow-gear));
+}
+
+.gear-text {
+    position: absolute;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--foreground);
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.hero-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    color: var(--foreground);
+    line-height: 1.1;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.tagline-main {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: var(--gear-gold);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.tagline-sub {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.125rem;
+    color: var(--muted-foreground);
+    max-width: 48rem;
+    line-height: 1.7;
+}
+
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.hero-stats {
+    margin-top: 4rem;
+}
+
+.stat-number {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--gear-gold);
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px rgba(234, 179, 8, 0.3);
+}
+
+.stat-label {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--muted-foreground);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--gear-gold);
+    border-color: var(--gear-gold);
+    color: var(--industrial-dark);
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    box-shadow: var(--shadow-gear);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-primary:hover {
+    background-color: hsl(45, 93%, 52%);
+    border-color: hsl(45, 93%, 52%);
+    color: var(--industrial-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elevated);
+}
+
+.btn-outline-primary {
+    border-color: var(--gear-gold);
+    color: var(--gear-gold);
+    background-color: transparent;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--gear-gold);
+    border-color: var(--gear-gold);
+    color: var(--industrial-dark);
+    transform: translateY(-1px);
+}
+
+/* Section Titles */
+.section-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--foreground);
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 60px;
+    height: 3px;
+    background: var(--gear-gold);
+    transform: translateX(-50%);
+}
+
+.section-subtitle {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.125rem;
+    color: var(--muted-foreground);
+    max-width: 48rem;
+    line-height: 1.7;
+}
+
+.section-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.125rem;
+    color: var(--muted-foreground);
+    line-height: 1.7;
+}
+
+/* Mission Card */
+.mission-card {
+    background: var(--gradient-card);
+    border: 1px solid var(--machinery-border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.mission-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gear-gold);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.mission-card:hover::before {
+    transform: scaleX(1);
+}
+
+.mission-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-elevated);
+}
+
+.mission-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--gear-gold);
+}
+
+.mission-text {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--foreground);
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* Capability Cards */
+.capability-card {
+    background: var(--gradient-card);
+    border: 1px solid var(--machinery-border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.capability-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.05) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.capability-card:hover::before {
+    opacity: 1;
+}
+
+.capability-card:hover {
+    box-shadow: var(--shadow-elevated);
+    transform: translateY(-5px);
+    border-color: var(--gear-gold);
+}
+
+.capability-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--gear-gold);
+    transition: all 0.3s ease;
+}
+
+.capability-card:hover .capability-icon {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.5));
+}
+
+.capability-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--foreground);
+    transition: color 0.3s ease;
+}
+
+.capability-card:hover .capability-title {
+    color: var(--gear-gold);
+}
+
+.capability-text {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--muted-foreground);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* Project Cards */
+.project-card {
+    background: var(--gradient-card);
+    border: 1px solid var(--machinery-border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--gear-gold);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover::before {
+    transform: scaleY(1);
+}
+
+.project-card:hover {
+    box-shadow: var(--shadow-elevated);
+    transform: translateY(-3px);
+}
+
+.project-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.project-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--gear-gold);
+}
+
+.project-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--foreground);
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.project-card:hover .project-title {
+    color: var(--gear-gold);
+}
+
+.project-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-family: 'Rajdhani', sans-serif;
+    border: 1px solid;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-live {
+    background-color: rgba(34, 197, 94, 0.2);
+    color: rgb(74, 222, 128);
+    border-color: rgba(34, 197, 94, 0.5);
+}
+
+.status-development {
+    background-color: rgba(234, 179, 8, 0.2);
+    color: var(--gear-gold);
+    border-color: rgba(234, 179, 8, 0.5);
+}
+
+.status-completed {
+    background-color: rgba(59, 130, 246, 0.2);
+    color: rgb(96, 165, 250);
+    border-color: rgba(59, 130, 246, 0.5);
+}
+
+.project-type {
+    color: var(--gear-gold);
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.project-description {
+    color: var(--muted-foreground);
+    font-family: 'Rajdhani', sans-serif;
+    line-height: 1.7;
+}
+
+.project-technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tech-tag {
+    padding: 0.25rem 0.5rem;
+    background-color: var(--steel-gray);
+    color: var(--foreground);
+    font-size: 0.75rem;
+    border-radius: 0.25rem;
+    font-family: 'Rajdhani', sans-serif;
+    border: 1px solid var(--machinery-border);
+    transition: all 0.3s ease;
+}
+
+.tech-tag:hover {
+    background-color: var(--gear-gold);
+    color: var(--industrial-dark);
+}
+
+/* Service Cards */
+.service-card {
+    background: var(--gradient-card);
+    border: 1px solid var(--machinery-border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.service-card:hover {
+    box-shadow: var(--shadow-elevated);
+    transform: translateY(-5px);
+    border-color: var(--gear-gold);
+}
+
+.service-accent {
+    position: absolute;
+    top: -2.5rem;
+    right: -2.5rem;
+    width: 5rem;
+    height: 5rem;
+    background: rgba(234, 179, 8, 0.1);
+    border-radius: 50%;
+    transition: transform 0.5s ease;
+}
+
+.service-card:hover .service-accent {
+    transform: scale(1.5);
+}
+
+.service-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--foreground);
+    position: relative;
+    z-index: 10;
+    transition: color 0.3s ease;
+}
+
+.service-card:hover .service-title {
+    color: var(--gear-gold);
+}
+
+.service-description {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--muted-foreground);
+    line-height: 1.7;
+    position: relative;
+    z-index: 10;
+}
+
+.service-features {
+    list-style: none;
+    padding: 0;
+    position: relative;
+    z-index: 10;
+}
+
+.service-features li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--foreground);
+    font-size: 0.875rem;
+}
+
+.service-features i {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--gear-gold);
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+}
+
+.service-price {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gear-gold);
+    position: relative;
+    z-index: 10;
+    text-shadow: 0 0 10px rgba(234, 179, 8, 0.3);
+}
+
+/* Custom Solutions Card */
+.custom-solutions-card {
+    background: var(--gradient-card);
+    border: 1px solid var(--machinery-border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-card);
+    max-width: 64rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.custom-solutions-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.05) 0%, transparent 50%);
+    opacity: 0.5;
+}
+
+.custom-solutions-card h3 {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--foreground);
+    position: relative;
+    z-index: 10;
+}
+
+.custom-solutions-card p {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--muted-foreground);
+    line-height: 1.7;
+    position: relative;
+    z-index: 10;
+}
+
+/* Contact Section */
+.contact-info {
+    margin-top: 1rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease;
+}
+
+.contact-item:hover {
+    transform: translateX(5px);
+}
+
+.contact-icon {
+    width: 3rem;
+    height: 3rem;
+    background: var(--gradient-card);
+    border: 1px solid var(--machinery-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover .contact-icon {
+    background: var(--gear-gold);
+    border-color: var(--gear-gold);
+}
+
+.contact-icon i {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--gear-gold);
+    transition: color 0.3s ease;
+}
+
+.contact-item:hover .contact-icon i {
+    color: var(--industrial-dark);
+}
+
+.contact-details h4 {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    color: var(--foreground);
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+}
+
+.contact-details p {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--muted-foreground);
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* Contact Form */
+.contact-form-card {
+    background: var(--gradient-card);
+    border: 1px solid var(--machinery-border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-form-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gear-gold);
+}
+
+.form-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 500;
+    color: var(--foreground);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-control,
+.form-select {
+    background-color: var(--input);
+    border: 1px solid var(--border);
+    color: var(--foreground);
+    font-family: 'Rajdhani', sans-serif;
+    transition: all 0.3s ease;
+    padding: 0.75rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--input);
+    border-color: var(--gear-gold);
+    color: var(--foreground);
+    box-shadow: 0 0 0 0.25rem rgba(234, 179, 8, 0.25);
+}
+
+.form-control::placeholder {
+    color: var(--muted-foreground);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--industrial-dark);
+    border-top: 1px solid var(--machinery-border);
+    padding: 3rem 0 1rem;
+    position: relative;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gear-gold), transparent);
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+}
+
+.footer-logo {
+    height: 2rem;
+    width: 2rem;
+    margin-right: 0.75rem;
+}
+
+.footer-brand-text {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--foreground);
+}
+
+.footer-text {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--muted-foreground);
+    line-height: 1.7;
+}
+
+.footer-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    color: var(--foreground);
+    font-size: 1.125rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.footer-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background: var(--gear-gold);
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--muted-foreground);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.footer-links a::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--gear-gold);
+    transition: width 0.3s ease;
+    transform: translateY(-50%);
+}
+
+.footer-links a:hover::before {
+    width: 6px;
+}
+
+.footer-links a:hover {
+    color: var(--gear-gold);
+    padding-left: 10px;
+}
+
+.footer-divider {
+    border-color: var(--machinery-border);
+    margin: 2rem 0 1rem;
+}
+
+.footer-bottom {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--muted-foreground);
+}
+
+/* Back to Top */
+.back-to-top {
+    position: fixed;
+    right: 1rem;
+    bottom: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    z-index: 1050;
+    box-shadow: var(--shadow-card);
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.back-to-top:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elevated);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .section-padding {
+        padding: 3rem 0;
+    }
+
+    .hero-section {
+        padding-top: 4rem;
+        text-align: center;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .hero-stats {
+        margin-top: 3rem;
+    }
+
+    .gear-icon {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .gear-text {
+        font-size: 1.25rem;
+    }
+
+    .tagline-main {
+        font-size: 1.5rem;
+    }
+
+    .tagline-sub {
+        font-size: 1rem;
+    }
+
+    .messages-container {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .logo-img {
+        height: 2rem;
+        width: 2rem;
+    }
+
+    .brand-text {
+        font-size: 1rem;
+    }
+
+    .hero-section {
+        padding-top: 3rem;
+    }
+
+    .section-padding {
+        padding: 2rem 0;
+    }
+
+    .contact-form-card,
+    .mission-card,
+    .custom-solutions-card {
+        padding: 1.5rem;
+    }
+
+    .service-card {
+        padding: 1.5rem;
+    }
+
+    .back-to-top {
+        right: 0.75rem;
+        bottom: 0.75rem;
+    }
+}
+
+/* Scroll margin for anchor links */
+#about,
+#services,
+#projects,
+#contact {
+    scroll-margin-top: 96px;
+}
+
+/* Loading animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Hover effects for interactive elements */
+.interactive-hover {
+    transition: all 0.3s ease;
+}
+
+.interactive-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elevated);
+}
+
+/* HERO CLICK FIX: keep pattern layer behind everything */
+.hero-section {
+  position: relative;
+}
+
+.hero-patterns {
+  z-index: 0;
+  pointer-events: none !important;
+}
+
+.hero-patterns .pattern {
+  pointer-events: none !important;
+}
+
+/* Put actual content above the overlay */
+.hero-section .container,
+.hero-content,
+.hero-stats {
+  position: relative;
+  z-index: 2;
+}
+
+.custom-solutions-card * {
+  position: relative;
+  z-index: 10;
+}
+.custom-solutions-card::before {
+  z-index: 1;
+  pointer-events: none;
+}

@@ -1,0 +1,350 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contact Us – YG Engineering{% endblock %}
+
+{% block content %}
+<!-- Contact Hero -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center min-vh-100">
+      <div class="col-12 text-center">
+        <h1 class="hero-title mb-4">
+          Get In <span class="text-gear-gold">Touch</span>
+        </h1>
+        <p class="tagline-main mb-3">
+          Ready to Transform Your Business?
+        </p>
+        <p class="tagline-sub mb-5">
+          Let's discuss your project and engineer the perfect solution for your needs.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section class="section-padding">
+  <div class="container">
+    <div class="row">
+      <!-- Contact Info -->
+      <div class="col-lg-4 mb-5">
+        <div class="contact-info">
+          <div class="contact-item mb-4">
+            <div class="contact-icon">
+              <i data-lucide="phone"></i>
+            </div>
+            <div class="contact-details">
+              <h4>Call Us</h4>
+              <p>+27 73 226 1199</p>
+              <small class="text-muted-foreground">Mon - Fri: 8:00 AM - 6:00 PM</small>
+            </div>
+          </div>
+
+          <div class="contact-item mb-4">
+            <div class="contact-icon">
+              <i data-lucide="mail"></i>
+            </div>
+            <div class="contact-details">
+              <h4>Email Us</h4>
+              <p>ygengineeringza@gmail.com</p>
+              <small class="text-muted-foreground">We respond within 24 hours</small>
+            </div>
+          </div>
+
+          <div class="contact-item mb-4">
+            <div class="contact-icon">
+              <i data-lucide="map-pin"></i>
+            </div>
+            <div class="contact-details">
+              <h4>Location</h4>
+              <p>South Africa</p>
+              <small class="text-muted-foreground">Serving clients nationwide</small>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i data-lucide="clock"></i>
+            </div>
+            <div class="contact-details">
+              <h4>Response Time</h4>
+              <p>Within 2 hours</p>
+              <small class="text-muted-foreground">During business hours</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="col-lg-8">
+        <div class="contact-form-card">
+          <div class="form-header mb-4">
+            <h3 class="form-title">
+              <i data-lucide="message-circle" class="me-2"></i>
+              Start Your Project
+            </h3>
+            <p class="form-subtitle text-muted-foreground">
+              Tell us about your project and we'll get back to you with a detailed proposal.
+            </p>
+          </div>
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                  First Name <span class="text-danger">*</span>
+                </label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                  <div class="text-danger small mt-1">
+                    {% for error in form.first_name.errors %}{{ error }}{% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="{{ form.last_name.id_for_label }}" class="form-label">
+                  Last Name <span class="text-danger">*</span>
+                </label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                  <div class="text-danger small mt-1">
+                    {% for error in form.last_name.errors %}{{ error }}{% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="{{ form.email.id_for_label }}" class="form-label">
+                  Email Address <span class="text-danger">*</span>
+                </label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                  <div class="text-danger small mt-1">
+                    {% for error in form.email.errors %}{{ error }}{% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="{{ form.company.id_for_label }}" class="form-label">
+                  Company
+                </label>
+                {{ form.company }}
+                {% if form.company.errors %}
+                  <div class="text-danger small mt-1">
+                    {% for error in form.company.errors %}{{ error }}{% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="{{ form.subject.id_for_label }}" class="form-label">
+                Service Interest <span class="text-danger">*</span>
+              </label>
+              <select name="subject" id="{{ form.subject.id_for_label }}" class="form-select" required>
+                <option value="">Select a service...</option>
+                {% for slug, label in subjects.items %}
+                  <option value="{{ slug }}" {% if form.subject.value == slug %}selected{% endif %}>
+                    {{ label }}
+                  </option>
+                {% endfor %}
+              </select>
+              {% if form.subject.errors %}
+                <div class="text-danger small mt-1">
+                  {% for error in form.subject.errors %}{{ error }}{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-3">
+              <label for="{{ form.message.id_for_label }}" class="form-label">
+                Project Details <span class="text-danger">*</span>
+              </label>
+              {{ form.message }}
+              {% if form.message.errors %}
+                <div class="text-danger small mt-1">
+                  {% for error in form.message.errors %}{{ error }}{% endfor %}
+                </div>
+              {% endif %}
+              <div class="form-text">
+                Include details about your requirements, timeline, budget range, and any specific features you need.
+              </div>
+            </div>
+
+            <!-- Honeypot -->
+            <div style="display: none;">
+              {{ form.honeypot }}
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg">
+                <i data-lucide="send" class="me-2"></i>
+                Send Message
+              </button>
+            </div>
+
+            <div class="form-footer mt-3 text-center">
+              <small class="text-muted">
+                <i data-lucide="shield-check" class="me-1"></i>
+                Your information is secure and will never be shared.
+              </small>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+          <!-- FAQ Section -->
+<section class="section-padding bg-steel-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center mb-5">
+        <h2 class="section-title mb-4" style="color: white !important;">Frequently <span class="text-gear-gold">Asked Questions</span></h2>
+        <p class="section-subtitle" style="color: #cccccc !important;">
+          Quick answers to common questions about our services and process.
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="accordion" id="faqAccordion">
+          <!-- FAQ Item 1 -->
+          <div class="accordion-item bg-steel-gray border-machinery-border">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed bg-steel-gray"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#faq1"
+                      style="color: white !important;">
+                How long does a typical project take?
+              </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body" style="color: #dddddd !important;">
+                Project timelines vary based on complexity. Simple websites typically take 2-4 weeks, while custom web applications can take 2-6 months. We'll provide a detailed timeline during our initial consultation.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Item 2 -->
+          <div class="accordion-item bg-steel-gray border-machinery-border">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed bg-steel-gray"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#faq2"
+                      style="color: white !important;">
+                Do you provide ongoing support?
+              </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body" style="color: #dddddd !important;">
+                Yes! We offer comprehensive maintenance and support packages to keep your website or application running smoothly, secure, and up-to-date.
+              </div>
+            </div>
+          </div>
+
+         <!-- FAQ Item 3 - Technologies -->
+<div class="accordion-item bg-steel-gray border-machinery-border">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed bg-steel-gray"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#faq3"
+            style="color: white !important;">
+      What technologies do you use?
+    </button>
+  </h2>
+  <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+    <div class="accordion-body" style="color: #dddddd !important;">
+      <p>Our core technology stack focuses on robust, efficient solutions:</p>
+      <ul>
+        <li><strong>Python</strong> - Our primary programming language for backend development</li>
+        <li><strong>Django Framework</strong> - For building secure, scalable web applications</li>
+        <li><strong>JavaScript</strong> - For client-side interactivity and functionality</li>
+        <li><strong>SQL Databases</strong> - PostgreSQL and MySQL for reliable data storage</li>
+        <li><strong>HTML5/CSS3</strong> - Foundation for modern, responsive frontend development</li>
+        <li><strong>Bootstrap</strong> - Framework for efficient UI development and consistent design</li>
+      </ul>
+      <p>We specialize in Python/Django solutions while leveraging JavaScript for enhanced user experiences, all built on solid web fundamentals.</p>
+    </div>
+  </div>
+</div>
+          <!-- FAQ Item 4 -->
+          <div class="accordion-item bg-steel-gray border-machinery-border">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed bg-steel-gray"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#faq4"
+                      style="color: white !important;">
+                How do you handle project pricing?
+              </button>
+            </h2>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body" style="color: #dddddd !important;">
+                We provide transparent, fixed-price quotes for most projects. For larger or complex projects, we may recommend a phased approach. No hidden costs or surprise fees.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_body %}
+<style>
+.form-header {
+  text-align: center;
+  border-bottom: 1px solid var(--machinery-border);
+  padding-bottom: 1rem;
+}
+
+.form-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.form-footer {
+  border-top: 1px solid var(--machinery-border);
+  padding-top: 1rem;
+}
+
+.accordion-button {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 500;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: var(--gear-gold);
+  color: var(--industrial-dark);
+}
+
+.accordion-body {
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--muted-foreground);
+}
+</style>
+{% endblock %}
