@@ -1,344 +1,117 @@
-<!doctype html>
 {% load billing_extras %}
+<!doctype html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Companies - YG Engineering</title>
   <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
-  :root {
-    --bg:       hsl(220,13%,9%);
-    --card:     hsl(220,13%,11%);
-    --card2:    hsl(220,13%,14%);
-    --border:   hsl(220,13%,20%);
-    --fg:       hsl(0,0%,98%);
-    --muted:    hsl(0,0%,60%);
-    --gold:     hsla(45,93%,58%,0.9);
-    --gold-dim: hsla(45,48%,56%,0.7);
-    --success:  #4caf82;
-    --danger:   #e05c5c;
-    --warning:  #f0a500;
-    --info:     #4ab0cc;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Rajdhani', Arial, sans-serif;
-    background: var(--bg);
-    color: var(--fg);
-    padding: 16px;
-    line-height: 1.6;
-    font-size: 15px;
-  }
-  .container { max-width: 1400px; margin: 0 auto; width: 100%; }
-  h1, h2, h3 {
-    font-family: 'Orbitron', monospace;
-    color: var(--gold);
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-  }
-  h2 { font-size: 1.1rem; }
-  h3 { font-size: 0.95rem; }
-  a { color: var(--gold-dim); }
-  a:hover { color: var(--gold); }
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;500;600;700&display=swap');
+    :root { --bg:hsl(220,13%,9%);--card:hsl(220,13%,11%);--card2:hsl(220,13%,14%);--border:hsl(220,13%,20%);--fg:hsl(0,0%,98%);--muted:hsl(0,0%,60%);--gold:hsla(45,93%,58%,0.9);--gold-dim:hsla(45,48%,56%,0.7);--success:#4caf82;--danger:#e05c5c;--warning:#f0a500;--info:#4ab0cc; }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--fg);padding:16px;}
+    .container{max-width:1200px;margin:0 auto;}
+    .back-link{color:var(--muted);text-decoration:none;font-size:0.88rem;display:inline-block;margin-bottom:16px;}
+    .back-link:hover{color:var(--gold);}
+    .page-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+    .page-header h2{font-family:'Orbitron',monospace;color:var(--gold);font-size:1.1rem;letter-spacing:1px;margin:0;}
+    .btn{display:inline-block;padding:8px 14px;border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--fg);background:var(--card2);font-family:'Rajdhani',sans-serif;font-size:0.9rem;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+    .btn:hover{border-color:var(--gold-dim);color:var(--gold);}
+    .btn-primary{background:var(--gold);color:hsl(220,13%,9%);border-color:var(--gold);font-weight:700;}
+    .btn-sm{padding:5px 10px;font-size:0.82rem;}
+    .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:0.78rem;font-weight:700;}
+    .badge-success{background:rgba(76,175,130,0.15);color:var(--success);border:1px solid var(--success);}
+    .badge-secondary{background:var(--card2);color:var(--muted);border:1px solid var(--border);}
+    .muted{color:var(--muted);}
+    .text-success{color:var(--success)!important;}
+    .text-danger{color:var(--danger)!important;}
+    .text-warning{color:var(--warning)!important;}
 
-  /* Nav bar */
-  .top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .top-nav h2 { margin: 0; }
-  .top-nav > div { display: flex; gap: 8px; flex-wrap: wrap; }
+    /* Desktop table */
+    .desktop-table{display:block;}
+    table{width:100%;border-collapse:collapse;}
+    th{background:var(--card2);color:var(--muted);font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;}
+    td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:0.92rem;}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:hsl(220,13%,12%);}
+    .actions{display:flex;gap:5px;}
 
-  /* Buttons */
-  .btn {
-    display: inline-block;
-    padding: 8px 14px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    text-decoration: none;
-    color: var(--fg);
-    background: var(--card2);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .btn:hover { border-color: var(--gold-dim); color: var(--gold); }
-  .btn-primary { background: var(--gold); color: hsl(220,13%,9%); border-color: var(--gold); font-weight: 700; }
-  .btn-primary:hover { background: hsla(45,93%,65%,0.9); color: hsl(220,13%,9%); }
-  .btn-success { background: var(--success); color: #fff; border-color: var(--success); }
-  .btn-info { background: var(--info); color: #fff; border-color: var(--info); }
-  .btn-danger { background: var(--danger); color: #fff; border-color: var(--danger); }
-  .btn-sm { padding: 4px 9px; font-size: 0.82rem; }
+    /* Mobile cards */
+    .mobile-cards{display:none;}
+    .co-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;}
+    .co-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+    .co-name{font-family:'Orbitron',monospace;color:var(--gold);font-size:0.9rem;margin-bottom:2px;}
+    .co-contact{color:var(--muted);font-size:0.85rem;}
+    .co-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+    .co-label{color:var(--muted);font-size:0.78rem;margin-bottom:2px;}
+    .co-value{font-size:0.95rem;font-weight:600;}
+    .co-actions{display:flex;gap:8px;margin-top:12px;}
+    .co-actions .btn{flex:1;text-align:center;}
 
-  /* Cards */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 14px;
-  }
-
-  /* Stats bar */
-  .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 16px 0; }
-  .stat-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    transition: all 0.2s;
-  }
-  .stat-card:hover { border-color: var(--gold-dim); }
-  .stat-label { color: var(--muted); font-size: 0.8rem; margin-bottom: 4px; }
-  .stat-value { font-size: 1.3rem; font-weight: 700; font-family: 'Orbitron', monospace; }
-  .stat-small { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
-
-  /* Table — scrollable on mobile */
-  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 10px; border: 1px solid var(--border); }
-  table { width: 100%; border-collapse: collapse; min-width: 600px; }
-  th {
-    background: var(--card2);
-    color: var(--muted);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    text-align: left;
-    white-space: nowrap;
-  }
-  td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; font-size: 0.9rem; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: hsl(220,13%,12%); }
-  .amount-cell { text-align: right; font-weight: 500; white-space: nowrap; }
-
-  /* Filters */
-  .filter-section {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin: 14px 0;
-  }
-  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  input, select, textarea {
-    padding: 9px 12px;
-    background: var(--card2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--fg);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.92rem;
-    outline: none;
-    transition: border-color 0.2s;
-    width: 100%;
-  }
-  input:focus, select:focus, textarea:focus { border-color: var(--gold-dim); }
-  label { color: var(--muted); font-size: 0.82rem; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
-
-  /* Status tabs */
-  .status-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
-  .status-tab {
-    padding: 5px 12px;
-    border-radius: 20px;
-    text-decoration: none;
-    color: var(--muted);
-    background: var(--card2);
-    border: 1px solid var(--border);
-    font-size: 0.82rem;
-    white-space: nowrap;
-    transition: all 0.2s;
-  }
-  .status-tab:hover { border-color: var(--gold-dim); color: var(--fg); }
-  .status-tab.active { background: var(--gold); color: hsl(220,13%,9%); border-color: var(--gold); font-weight: 700; }
-
-  /* Badges */
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
-  .badge-success { background: rgba(76,175,130,0.15); color: var(--success); border: 1px solid var(--success); }
-  .badge-danger  { background: rgba(224,92,92,0.15);  color: var(--danger);  border: 1px solid var(--danger); }
-  .badge-warning { background: rgba(240,165,0,0.15);  color: var(--warning); border: 1px solid var(--warning); }
-  .badge-info    { background: rgba(74,176,204,0.15); color: var(--info);    border: 1px solid var(--info); }
-  .badge-secondary { background: var(--card2); color: var(--muted); border: 1px solid var(--border); }
-
-  /* Colors */
-  .text-success { color: var(--success) !important; }
-  .text-danger  { color: var(--danger)  !important; }
-  .text-warning { color: var(--warning) !important; }
-  .text-info    { color: var(--info)    !important; }
-  .muted        { color: var(--muted); }
-
-  /* Form layout */
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .form-group { margin-bottom: 14px; }
-  .form-group input, .form-group select, .form-group textarea { width: 100%; }
-  .actions { display: flex; gap: 6px; flex-wrap: wrap; }
-
-  /* Detail sections */
-  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-  .info-block { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
-  .info-block h3 { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; margin-bottom: 8px; }
-
-  /* Summary footer */
-  .summary-footer {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-top: 16px;
-  }
-
-  /* Back link */
-  .back-link { color: var(--muted); text-decoration: none; font-size: 0.88rem; display: inline-block; margin-bottom: 14px; }
-  .back-link:hover { color: var(--gold); }
-
-  /* Tooltip */
-  .tooltip { position: relative; display: inline-block; cursor: help; }
-  .tooltip .tooltiptext {
-    visibility: hidden; width: 180px; background: var(--card2); color: var(--fg);
-    border: 1px solid var(--border); text-align: center; border-radius: 8px; padding: 8px;
-    position: absolute; z-index: 10; bottom: 125%; left: 50%; margin-left: -90px;
-    opacity: 0; transition: opacity 0.2s; font-size: 0.82rem;
-  }
-  .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
-
-  /* Mobile responsive */
-  @media (max-width: 768px) {
-    body { padding: 10px; }
-    .form-grid { grid-template-columns: 1fr; }
-    .detail-grid { grid-template-columns: 1fr; }
-    .stats-bar { grid-template-columns: 1fr 1fr; }
-    .top-nav { flex-direction: column; }
-    .top-nav > div { width: 100%; }
-    .btn { font-size: 0.85rem; padding: 7px 11px; }
-    h2 { font-size: 1rem; }
-    .stat-value { font-size: 1.1rem; }
-  }
-  @media (max-width: 480px) {
-    .stats-bar { grid-template-columns: 1fr; }
-    .status-tabs { gap: 4px; }
-    .status-tab { font-size: 0.75rem; padding: 4px 9px; }
-  }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 5px; height: 5px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-</style>
+    @media(max-width:768px){
+      .desktop-table{display:none;}
+      .mobile-cards{display:block;}
+      .page-header{flex-direction:column;align-items:flex-start;}
+    }
+  </style>
 </head>
 <body>
-  <div style="max-width:1400px;margin:0 auto 16px;"><a href="/dashboard/" style="color:var(--muted);text-decoration:none;font-size:0.88rem;font-family:Rajdhani,sans-serif;">← Dashboard</a></div>
+<div class="container">
+  <a href="/dashboard/" class="back-link">← Dashboard</a>
+  <div class="page-header">
+    <h2>Companies</h2>
+    <a class="btn btn-primary" href="{% url 'billing:company_create' %}">+ New Company</a>
+  </div>
 
-  <div class="container">
-    <div class="top">
-      <h2>Companies</h2>
-      <div>
-        <a class="btn btn-info" href="{% url 'billing:invoice_list' %}" style="margin-right: 10px;">← Back to Invoices</a>
-        <a class="btn btn-primary" href="{% url 'billing:company_create' %}">+ Add Company</a>
-      </div>
-    </div>
-
-    <!-- Stats Cards -->
-    <div class="stats-bar">
-      <div class="stat-card">
-        <div class="stat-label">Total Companies</div>
-        <div class="stat-value">{{ total_companies }}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Active Companies</div>
-        <div class="stat-value text-success">{{ active_companies }}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Monthly Revenue</div>
-        <div class="stat-value text-info">R{{ active_companies|mul:150|floatformat:2 }}</div>
-      </div>
-    </div>
-
-    <!-- Companies Table -->
-    <div class="table-wrap"><table>
-      <thead>
-        <tr>
-          <th>Company</th>
-          <th>Contact Person</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Monthly Rate</th>
-          <th>Credit Balance</th>
-          <th>Coverage</th>
-          <th>Status</th>
-          <th class="muted">Actions</th>
-        </tr>
-      </thead>
+  {% if companies %}
+  <!-- Desktop -->
+  <div class="desktop-table">
+    <table>
+      <thead><tr><th>Company</th><th>Contact</th><th>Email</th><th>Phone</th><th>Rate</th><th>Status</th><th>Actions</th></tr></thead>
       <tbody>
-        {% for company in companies %}
+        {% for co in companies %}
         <tr>
-          <td>
-            <a href="{% url 'billing:company_detail' company.pk %}" style="font-weight: 500;">
-              {{ company.business_name|default:company.name }}
-            </a>
-            {% if not company.business_name %}
-              <br><span class="muted" style="font-size: 0.9em;">{{ company.name }}</span>
-            {% endif %}
-          </td>
-          <td>{{ company.name }}</td>
-          <td>{{ company.email|default:"-" }}</td>
-          <td>{{ company.phone|default:"-" }}</td>
-          <td>R{{ company.monthly_rate|floatformat:2 }}</td>
-          <td class="{% if company.get_credit_balance > 0 %}text-warning{% endif %}">
-            {% with credit=company.get_credit_balance %}
-              {% if credit > 0 %}
-                <span class="credit-indicator credit"></span>
-                R{{ credit|floatformat:2 }}
-              {% else %}
-                -
-              {% endif %}
-            {% endwith %}
-          </td>
-          <td>
-            {% with months=company.get_credit_balance|div:company.monthly_rate %}
-              {% if months > 0 %}
-                {{ months|floatformat:1 }} months
-                <br><small class="muted">until {{ company.get_coverage_info.1|date:"Y-m-d" }}</small>
-              {% else %}
-                -
-              {% endif %}
-            {% endwith %}
-          </td>
-          <td>
-            {% if company.is_active %}
-              <span class="badge badge-success">Active</span>
-            {% else %}
-              <span class="badge badge-secondary">Inactive</span>
-            {% endif %}
-            {% if company.auto_generate_invoices %}
-              <br><small class="muted">Auto</small>
-            {% endif %}
-          </td>
-          <td class="actions">
-            <a class="btn btn-sm" href="{% url 'billing:company_detail' company.pk %}" title="View">👁️</a>
-            <a class="btn btn-sm" href="{% url 'billing:company_edit' company.pk %}" title="Edit">✏️</a>
-            <a class="btn btn-sm btn-success" href="{% url 'billing:invoice_create' %}?company={{ company.pk }}" title="Create Invoice">📄</a>
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="9" style="text-align: center; padding: 40px;" class="muted">
-            <div style="font-size: 1.2em; margin-bottom: 10px;">No companies yet</div>
-            <a href="{% url 'billing:company_create' %}" class="btn btn-primary">Add your first company</a>
-          </td>
+          <td><strong>{{ co.business_name|default:co.name }}</strong></td>
+          <td>{{ co.name }}</td>
+          <td>{{ co.email|default:"-" }}</td>
+          <td>{{ co.phone|default:"-" }}</td>
+          <td class="text-success">R{{ co.monthly_rate|floatformat:2 }}</td>
+          <td>{% if co.is_active %}<span class="badge badge-success">Active</span>{% else %}<span class="badge badge-secondary">Inactive</span>{% endif %}</td>
+          <td><div class="actions"><a class="btn btn-sm" href="{% url 'billing:company_detail' co.pk %}">View</a><a class="btn btn-sm" href="{% url 'billing:company_edit' co.pk %}">Edit</a></div></td>
         </tr>
         {% endfor %}
       </tbody>
-    </table></div>
+    </table>
   </div>
+
+  <!-- Mobile -->
+  <div class="mobile-cards">
+    {% for co in companies %}
+    <div class="co-card">
+      <div class="co-card-header">
+        <div>
+          <div class="co-name">{{ co.business_name|default:co.name }}</div>
+          <div class="co-contact">{{ co.name }}</div>
+        </div>
+        {% if co.is_active %}<span class="badge badge-success">Active</span>{% else %}<span class="badge badge-secondary">Inactive</span>{% endif %}
+      </div>
+      <div class="co-grid">
+        <div><div class="co-label">Email</div><div class="co-value" style="font-size:0.85rem;">{{ co.email|default:"-" }}</div></div>
+        <div><div class="co-label">Phone</div><div class="co-value">{{ co.phone|default:"-" }}</div></div>
+        <div><div class="co-label">Monthly Rate</div><div class="co-value text-success">R{{ co.monthly_rate|floatformat:2 }}</div></div>
+      </div>
+      <div class="co-actions">
+        <a class="btn btn-sm" href="{% url 'billing:company_detail' co.pk %}">👁️ View</a>
+        <a class="btn btn-sm" href="{% url 'billing:company_edit' co.pk %}">✏️ Edit</a>
+      </div>
+    </div>
+    {% empty %}
+    <p style="color:var(--muted);text-align:center;padding:40px;">No companies yet. <a href="{% url 'billing:company_create' %}" class="btn btn-primary" style="margin-left:8px;">Add Company</a></p>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p style="color:var(--muted);text-align:center;padding:48px;">No companies yet. <a href="{% url 'billing:company_create' %}" style="color:var(--gold);">Add your first company</a></p>
+  {% endif %}
+</div>
 </body>
 </html>

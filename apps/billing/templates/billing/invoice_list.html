@@ -1,449 +1,284 @@
-<!doctype html>
 {% load billing_extras %}
+<!doctype html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Invoices - YG Engineering</title>
   <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
-  :root {
-    --bg:       hsl(220,13%,9%);
-    --card:     hsl(220,13%,11%);
-    --card2:    hsl(220,13%,14%);
-    --border:   hsl(220,13%,20%);
-    --fg:       hsl(0,0%,98%);
-    --muted:    hsl(0,0%,60%);
-    --gold:     hsla(45,93%,58%,0.9);
-    --gold-dim: hsla(45,48%,56%,0.7);
-    --success:  #4caf82;
-    --danger:   #e05c5c;
-    --warning:  #f0a500;
-    --info:     #4ab0cc;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Rajdhani', Arial, sans-serif;
-    background: var(--bg);
-    color: var(--fg);
-    padding: 16px;
-    line-height: 1.6;
-    font-size: 15px;
-  }
-  .container { max-width: 1400px; margin: 0 auto; width: 100%; }
-  h1, h2, h3 {
-    font-family: 'Orbitron', monospace;
-    color: var(--gold);
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-  }
-  h2 { font-size: 1.1rem; }
-  h3 { font-size: 0.95rem; }
-  a { color: var(--gold-dim); }
-  a:hover { color: var(--gold); }
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;500;600;700&display=swap');
+    :root {
+      --bg: hsl(220,13%,9%);
+      --card: hsl(220,13%,11%);
+      --card2: hsl(220,13%,14%);
+      --border: hsl(220,13%,20%);
+      --fg: hsl(0,0%,98%);
+      --muted: hsl(0,0%,60%);
+      --gold: hsla(45,93%,58%,0.9);
+      --gold-dim: hsla(45,48%,56%,0.7);
+      --success: #4caf82;
+      --danger: #e05c5c;
+      --warning: #f0a500;
+      --info: #4ab0cc;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Rajdhani', sans-serif; background: var(--bg); color: var(--fg); padding: 16px; }
+    .container { max-width: 1200px; margin: 0 auto; }
 
-  /* Nav bar */
-  .top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .top-nav h2 { margin: 0; }
-  .top-nav > div { display: flex; gap: 8px; flex-wrap: wrap; }
+    /* Back link */
+    .back-link { color: var(--muted); text-decoration: none; font-size: 0.88rem; display: inline-block; margin-bottom: 16px; }
+    .back-link:hover { color: var(--gold); }
 
-  /* Buttons */
-  .btn {
-    display: inline-block;
-    padding: 8px 14px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    text-decoration: none;
-    color: var(--fg);
-    background: var(--card2);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .btn:hover { border-color: var(--gold-dim); color: var(--gold); }
-  .btn-primary { background: var(--gold); color: hsl(220,13%,9%); border-color: var(--gold); font-weight: 700; }
-  .btn-primary:hover { background: hsla(45,93%,65%,0.9); color: hsl(220,13%,9%); }
-  .btn-success { background: var(--success); color: #fff; border-color: var(--success); }
-  .btn-info { background: var(--info); color: #fff; border-color: var(--info); }
-  .btn-danger { background: var(--danger); color: #fff; border-color: var(--danger); }
-  .btn-sm { padding: 4px 9px; font-size: 0.82rem; }
+    /* Header */
+    .page-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .page-header h2 { font-family: 'Orbitron', monospace; color: var(--gold); font-size: 1.1rem; letter-spacing: 1px; margin: 0; }
+    .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-  /* Cards */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 14px;
-  }
+    /* Buttons */
+    .btn { display: inline-block; padding: 8px 14px; border: 1px solid var(--border); border-radius: 8px; text-decoration: none; color: var(--fg); background: var(--card2); font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+    .btn-primary { background: var(--gold); color: hsl(220,13%,9%); border-color: var(--gold); font-weight: 700; }
+    .btn-success { background: var(--success); color: #fff; border-color: var(--success); }
+    .btn-info { background: var(--info); color: #fff; border-color: var(--info); }
+    .btn-sm { padding: 5px 10px; font-size: 0.82rem; }
 
-  /* Stats bar */
-  .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 16px 0; }
-  .stat-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    transition: all 0.2s;
-  }
-  .stat-card:hover { border-color: var(--gold-dim); }
-  .stat-label { color: var(--muted); font-size: 0.8rem; margin-bottom: 4px; }
-  .stat-value { font-size: 1.3rem; font-weight: 700; font-family: 'Orbitron', monospace; }
-  .stat-small { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+    /* Stats */
+    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+    .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+    .stat-label { color: var(--muted); font-size: 0.78rem; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-value { font-size: 1.2rem; font-weight: 700; font-family: 'Orbitron', monospace; }
+    .stat-small { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
 
-  /* Table — scrollable on mobile */
-  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 10px; border: 1px solid var(--border); }
-  table { width: 100%; border-collapse: collapse; min-width: 600px; }
-  th {
-    background: var(--card2);
-    color: var(--muted);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    text-align: left;
-    white-space: nowrap;
-  }
-  td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; font-size: 0.9rem; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: hsl(220,13%,12%); }
-  .amount-cell { text-align: right; font-weight: 500; white-space: nowrap; }
+    /* Filter */
+    .filter-section { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+    .filter-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filter-row input, .filter-row select { padding: 8px 12px; background: var(--card2); border: 1px solid var(--border); border-radius: 8px; color: var(--fg); font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; outline: none; flex: 1; min-width: 140px; }
+    .filter-row input:focus, .filter-row select:focus { border-color: var(--gold-dim); }
+    .status-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    .status-tab { padding: 4px 12px; border-radius: 20px; text-decoration: none; color: var(--muted); background: var(--card2); border: 1px solid var(--border); font-size: 0.82rem; white-space: nowrap; }
+    .status-tab.active { background: var(--gold); color: hsl(220,13%,9%); border-color: var(--gold); font-weight: 700; }
 
-  /* Filters */
-  .filter-section {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin: 14px 0;
-  }
-  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  input, select, textarea {
-    padding: 9px 12px;
-    background: var(--card2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--fg);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.92rem;
-    outline: none;
-    transition: border-color 0.2s;
-    width: 100%;
-  }
-  input:focus, select:focus, textarea:focus { border-color: var(--gold-dim); }
-  label { color: var(--muted); font-size: 0.82rem; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+    /* Badges */
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; }
+    .badge-success { background: rgba(76,175,130,0.15); color: var(--success); border: 1px solid var(--success); }
+    .badge-danger  { background: rgba(224,92,92,0.15); color: var(--danger); border: 1px solid var(--danger); }
+    .badge-warning { background: rgba(240,165,0,0.15); color: var(--warning); border: 1px solid var(--warning); }
+    .badge-info    { background: rgba(74,176,204,0.15); color: var(--info); border: 1px solid var(--info); }
+    .badge-secondary { background: var(--card2); color: var(--muted); border: 1px solid var(--border); }
 
-  /* Status tabs */
-  .status-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
-  .status-tab {
-    padding: 5px 12px;
-    border-radius: 20px;
-    text-decoration: none;
-    color: var(--muted);
-    background: var(--card2);
-    border: 1px solid var(--border);
-    font-size: 0.82rem;
-    white-space: nowrap;
-    transition: all 0.2s;
-  }
-  .status-tab:hover { border-color: var(--gold-dim); color: var(--fg); }
-  .status-tab.active { background: var(--gold); color: hsl(220,13%,9%); border-color: var(--gold); font-weight: 700; }
+    /* Colors */
+    .text-success { color: var(--success) !important; }
+    .text-danger  { color: var(--danger) !important; }
+    .text-warning { color: var(--warning) !important; }
+    .text-info    { color: var(--info) !important; }
+    .muted { color: var(--muted); }
 
-  /* Badges */
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
-  .badge-success { background: rgba(76,175,130,0.15); color: var(--success); border: 1px solid var(--success); }
-  .badge-danger  { background: rgba(224,92,92,0.15);  color: var(--danger);  border: 1px solid var(--danger); }
-  .badge-warning { background: rgba(240,165,0,0.15);  color: var(--warning); border: 1px solid var(--warning); }
-  .badge-info    { background: rgba(74,176,204,0.15); color: var(--info);    border: 1px solid var(--info); }
-  .badge-secondary { background: var(--card2); color: var(--muted); border: 1px solid var(--border); }
+    /* DESKTOP TABLE */
+    .desktop-table { display: block; }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: var(--card2); color: var(--muted); font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; padding: 10px 14px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+    td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; font-size: 0.92rem; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: hsl(220,13%,12%); }
+    .amount-cell { text-align: right; font-weight: 500; }
+    .actions { display: flex; gap: 5px; }
 
-  /* Colors */
-  .text-success { color: var(--success) !important; }
-  .text-danger  { color: var(--danger)  !important; }
-  .text-warning { color: var(--warning) !important; }
-  .text-info    { color: var(--info)    !important; }
-  .muted        { color: var(--muted); }
+    /* MOBILE CARDS */
+    .mobile-cards { display: none; }
+    .inv-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; text-decoration: none; color: var(--fg); display: block; transition: border-color 0.2s; }
+    .inv-card:hover { border-color: var(--gold-dim); }
+    .inv-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .inv-card-number { font-family: 'Orbitron', monospace; color: var(--gold); font-size: 0.9rem; }
+    .inv-card-client { font-size: 1rem; font-weight: 600; margin-bottom: 2px; }
+    .inv-card-company { color: var(--muted); font-size: 0.85rem; }
+    .inv-card-row { display: flex; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .inv-card-label { color: var(--muted); font-size: 0.8rem; margin-bottom: 2px; }
+    .inv-card-value { font-size: 0.95rem; font-weight: 600; }
+    .inv-card-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .inv-card-actions .btn { flex: 1; text-align: center; }
 
-  /* Form layout */
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .form-group { margin-bottom: 14px; }
-  .form-group input, .form-group select, .form-group textarea { width: 100%; }
-  .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    /* Summary */
+    .summary-footer { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-top: 16px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .summary-item { font-size: 0.9rem; }
+    .summary-item span { color: var(--muted); }
 
-  /* Detail sections */
-  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-  .info-block { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
-  .info-block h3 { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; margin-bottom: 8px; }
+    /* Empty state */
+    .empty-state { text-align: center; padding: 48px 20px; color: var(--muted); }
+    .empty-state p { margin-bottom: 16px; font-size: 1.1rem; }
 
-  /* Summary footer */
-  .summary-footer {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-top: 16px;
-  }
-
-  /* Back link */
-  .back-link { color: var(--muted); text-decoration: none; font-size: 0.88rem; display: inline-block; margin-bottom: 14px; }
-  .back-link:hover { color: var(--gold); }
-
-  /* Tooltip */
-  .tooltip { position: relative; display: inline-block; cursor: help; }
-  .tooltip .tooltiptext {
-    visibility: hidden; width: 180px; background: var(--card2); color: var(--fg);
-    border: 1px solid var(--border); text-align: center; border-radius: 8px; padding: 8px;
-    position: absolute; z-index: 10; bottom: 125%; left: 50%; margin-left: -90px;
-    opacity: 0; transition: opacity 0.2s; font-size: 0.82rem;
-  }
-  .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
-
-  /* Mobile responsive */
-  @media (max-width: 768px) {
-    body { padding: 10px; }
-    .form-grid { grid-template-columns: 1fr; }
-    .detail-grid { grid-template-columns: 1fr; }
-    .stats-bar { grid-template-columns: 1fr 1fr; }
-    .top-nav { flex-direction: column; }
-    .top-nav > div { width: 100%; }
-    .btn { font-size: 0.85rem; padding: 7px 11px; }
-    h2 { font-size: 1rem; }
-    .stat-value { font-size: 1.1rem; }
-  }
-  @media (max-width: 480px) {
-    .stats-bar { grid-template-columns: 1fr; }
-    .status-tabs { gap: 4px; }
-    .status-tab { font-size: 0.75rem; padding: 4px 9px; }
-  }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 5px; height: 5px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-</style>
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      .desktop-table { display: none; }
+      .mobile-cards { display: block; }
+      .page-header { flex-direction: column; align-items: flex-start; }
+      .summary-footer { flex-direction: column; }
+    }
+    @media (max-width: 420px) {
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      .stat-value { font-size: 1rem; }
+    }
+  </style>
 </head>
 <body>
-  <div style="max-width:1400px;margin:0 auto 16px;"><a href="/dashboard/" style="color:var(--muted);text-decoration:none;font-size:0.88rem;font-family:Rajdhani,sans-serif;">← Dashboard</a></div>
+<div class="container">
+  <a href="/dashboard/" class="back-link">← Dashboard</a>
 
-  <div class="container">
-    <div class="top">
-      <h2>Invoices</h2>
-      <div>
-        <a class="btn btn-success" href="{% url 'billing:generate_monthly_invoices' %}" style="margin-right: 10px;">📅 Generate Monthly</a>
-        <a class="btn btn-info" href="{% url 'billing:company_list' %}" style="margin-right: 10px;">🏢 Companies</a>
-        <a class="btn btn-primary" href="{% url 'billing:invoice_create' %}">+ Create Invoice</a>
-      </div>
+  <div class="page-header">
+    <h2>Invoices</h2>
+    <div class="header-actions">
+      <a class="btn btn-success" href="{% url 'billing:generate_monthly_invoices' %}">📅 Generate Monthly</a>
+      <a class="btn btn-info" href="{% url 'billing:company_list' %}">🏢 Companies</a>
+      <a class="btn btn-primary" href="{% url 'billing:invoice_create' %}">+ New Invoice</a>
     </div>
+  </div>
 
-    <!-- Stats Cards -->
-    <div class="stats-bar">
-      <div class="stat-card">
-        <div class="stat-label">Total Outstanding</div>
-        <div class="stat-value text-danger">R{{ total_outstanding|floatformat:2 }}</div>
-        <div class="stat-small">{{ status_counts.overdue }} overdue</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Total Credit</div>
-        <div class="stat-value text-warning">R{{ total_credit|floatformat:2 }}</div>
-        <div class="stat-small">{{ total_credit_months|floatformat:1 }} months coverage</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Total Paid</div>
-        <div class="stat-value text-success">R{{ total_paid|floatformat:2 }}</div>
-        <div class="stat-small">{{ status_counts.paid }} paid invoices</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Monthly Revenue</div>
-        <div class="stat-value text-info">R{{ monthly_rate|floatformat:2 }}</div>
-        <div class="stat-small">per subscription</div>
-      </div>
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-label">Outstanding</div>
+      <div class="stat-value text-danger">R{{ total_outstanding|floatformat:2 }}</div>
+      <div class="stat-small">{{ status_counts.overdue }} overdue</div>
     </div>
-
-    <!-- Filter Section -->
-    <div class="filter-section">
-      <form method="get" class="row">
-        <input name="q" placeholder="Search invoice or client..." value="{{ request.GET.q }}" style="flex: 1;">
-        <select name="status" style="min-width: 150px;">
-          <option value="">All Statuses</option>
-          <option value="draft" {% if request.GET.status == "draft" %}selected{% endif %}>Draft</option>
-          <option value="sent" {% if request.GET.status == "sent" %}selected{% endif %}>Sent</option>
-          <option value="partial" {% if request.GET.status == "partial" %}selected{% endif %}>Partially Paid</option>
-          <option value="paid" {% if request.GET.status == "paid" %}selected{% endif %}>Paid</option>
-          <option value="overdue" {% if request.GET.status == "overdue" %}selected{% endif %}>Overdue</option>
-          <option value="credit" {% if request.GET.status == "credit" %}selected{% endif %}>Credit</option>
-        </select>
-        <button class="btn" type="submit">Apply Filters</button>
-        {% if request.GET.q or request.GET.status %}
-          <a href="{% url 'billing:invoice_list' %}" class="btn">Clear</a>
-        {% endif %}
-      </form>
-
-      <!-- Status Quick Filters -->
-      <div class="status-tabs">
-        <a href="{% url 'billing:invoice_list' %}" class="status-tab {% if not request.GET.status %}active{% endif %}">All</a>
-        <a href="?status=draft" class="status-tab {% if request.GET.status == 'draft' %}active{% endif %}">Draft ({{ status_counts.draft }})</a>
-        <a href="?status=sent" class="status-tab {% if request.GET.status == 'sent' %}active{% endif %}">Sent ({{ status_counts.sent }})</a>
-        <a href="?status=partial" class="status-tab {% if request.GET.status == 'partial' %}active{% endif %}">Partial ({{ status_counts.partial }})</a>
-        <a href="?status=paid" class="status-tab {% if request.GET.status == 'paid' %}active{% endif %}">Paid ({{ status_counts.paid }})</a>
-        <a href="?status=overdue" class="status-tab {% if request.GET.status == 'overdue' %}active{% endif %}">Overdue ({{ status_counts.overdue }})</a>
-        <a href="?status=credit" class="status-tab {% if request.GET.status == 'credit' %}active{% endif %}">Credit ({{ status_counts.credit }})</a>
-      </div>
+    <div class="stat-card">
+      <div class="stat-label">Credit</div>
+      <div class="stat-value text-warning">R{{ total_credit|floatformat:2 }}</div>
+      <div class="stat-small">{{ total_credit_months|floatformat:1 }} months</div>
     </div>
+    <div class="stat-card">
+      <div class="stat-label">Paid</div>
+      <div class="stat-value text-success">R{{ total_paid|floatformat:2 }}</div>
+      <div class="stat-small">{{ status_counts.paid }} invoices</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Monthly</div>
+      <div class="stat-value text-info">R{{ monthly_rate|floatformat:2 }}</div>
+      <div class="stat-small">per subscription</div>
+    </div>
+  </div>
 
-    <!-- Invoices Table -->
-    <div class="table-wrap"><table>
+  <!-- Filters -->
+  <div class="filter-section">
+    <form method="get" class="filter-row">
+      <input name="q" placeholder="Search invoice or client..." value="{{ request.GET.q }}">
+      <select name="status">
+        <option value="">All Statuses</option>
+        <option value="draft" {% if request.GET.status == "draft" %}selected{% endif %}>Draft</option>
+        <option value="sent" {% if request.GET.status == "sent" %}selected{% endif %}>Sent</option>
+        <option value="partial" {% if request.GET.status == "partial" %}selected{% endif %}>Partially Paid</option>
+        <option value="paid" {% if request.GET.status == "paid" %}selected{% endif %}>Paid</option>
+        <option value="overdue" {% if request.GET.status == "overdue" %}selected{% endif %}>Overdue</option>
+        <option value="credit" {% if request.GET.status == "credit" %}selected{% endif %}>Credit</option>
+      </select>
+      <button class="btn" type="submit">Filter</button>
+      {% if request.GET.q or request.GET.status %}<a href="{% url 'billing:invoice_list' %}" class="btn">Clear</a>{% endif %}
+    </form>
+    <div class="status-tabs">
+      <a href="{% url 'billing:invoice_list' %}" class="status-tab {% if not request.GET.status %}active{% endif %}">All</a>
+      <a href="?status=draft" class="status-tab {% if request.GET.status == 'draft' %}active{% endif %}">Draft ({{ status_counts.draft }})</a>
+      <a href="?status=sent" class="status-tab {% if request.GET.status == 'sent' %}active{% endif %}">Sent ({{ status_counts.sent }})</a>
+      <a href="?status=paid" class="status-tab {% if request.GET.status == 'paid' %}active{% endif %}">Paid ({{ status_counts.paid }})</a>
+      <a href="?status=overdue" class="status-tab {% if request.GET.status == 'overdue' %}active{% endif %}">Overdue ({{ status_counts.overdue }})</a>
+      <a href="?status=credit" class="status-tab {% if request.GET.status == 'credit' %}active{% endif %}">Credit ({{ status_counts.credit }})</a>
+    </div>
+  </div>
+
+  {% if invoices %}
+
+  <!-- DESKTOP TABLE -->
+  <div class="desktop-table">
+    <table>
       <thead>
         <tr>
-          <th>Invoice #</th>
-          <th>Client</th>
-          <th>Date</th>
-          <th>Due</th>
-          <th>Status</th>
-          <th class="amount-cell">Total</th>
-          <th class="amount-cell">Paid</th>
-          <th class="amount-cell">Balance</th>
-          <th class="amount-cell">Coverage</th>
-          <th class="muted">Actions</th>
+          <th>Invoice #</th><th>Client</th><th>Date</th><th>Due</th><th>Status</th>
+          <th class="amount-cell">Total</th><th class="amount-cell">Paid</th>
+          <th class="amount-cell">Balance</th><th>Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for inv in invoices %}
         <tr>
+          <td><a href="{% url 'billing:invoice_detail' inv.pk %}" style="font-weight:600;color:var(--gold);">{{ inv.invoice_number }}</a></td>
           <td>
-            <a href="{% url 'billing:invoice_detail' inv.pk %}" style="font-weight: 500;">
-              {{ inv.invoice_number }}
-            </a>
+            {{ inv.bill_to_name }}
+            {% if inv.bill_to_company %}<br><span class="muted" style="font-size:0.85em;">{{ inv.bill_to_company }}</span>{% endif %}
           </td>
+          <td>{{ inv.invoice_date|date:"d M Y" }}</td>
+          <td>{{ inv.due_date|date:"d M Y" }}</td>
           <td>
-            <div class="tooltip">
-              {{ inv.bill_to_name }}
-              {% if inv.bill_to_company %}
-                <br><span class="muted" style="font-size: 0.9em;">{{ inv.bill_to_company }}</span>
-              {% endif %}
-              {% if inv.company %}
-                <span class="tooltiptext">
-                  Monthly rate: R{{ inv.company.monthly_rate|floatformat:2 }}<br>
-                  {% with credit=inv.company.get_credit_balance %}
-                    {% if credit > 0 %}
-                      Credit: R{{ credit|floatformat:2 }}
-                    {% endif %}
-                  {% endwith %}
-                </span>
-              {% endif %}
-            </div>
-          </td>
-          <td>{{ inv.invoice_date|date:"Y-m-d" }}</td>
-          <td>
-            {{ inv.due_date|date:"Y-m-d" }}
-            {% if inv.status == 'overdue' %}
-              <br><span class="badge badge-danger" style="font-size: 0.8em;">Overdue</span>
-            {% elif inv.days_until_due is not None and inv.days_until_due <= 7 and inv.days_until_due > 0 %}
-              <br><span class="badge badge-warning" style="font-size: 0.8em;">{{ inv.days_until_due }} days</span>
-            {% endif %}
-          </td>
-          <td>
-            {% if inv.status == "paid" %}
-              <span class="badge badge-success">Paid</span>
-            {% elif inv.status == "credit" %}
-              <span class="badge badge-warning">Credit</span>
-            {% elif inv.status == "overdue" %}
-              <span class="badge badge-danger">Overdue</span>
-            {% elif inv.status == "partial" %}
-              <span class="badge badge-warning">Partial</span>
-            {% elif inv.status == "sent" %}
-              <span class="badge badge-info">Sent</span>
-            {% else %}
-              <span class="badge badge-secondary">{{ inv.get_status_display }}</span>
-            {% endif %}
+            {% if inv.status == "paid" %}<span class="badge badge-success">Paid</span>
+            {% elif inv.status == "credit" %}<span class="badge badge-warning">Credit</span>
+            {% elif inv.status == "overdue" %}<span class="badge badge-danger">Overdue</span>
+            {% elif inv.status == "partial" %}<span class="badge badge-warning">Partial</span>
+            {% elif inv.status == "sent" %}<span class="badge badge-info">Sent</span>
+            {% else %}<span class="badge badge-secondary">{{ inv.get_status_display }}</span>{% endif %}
           </td>
           <td class="amount-cell">R{{ inv.total|floatformat:2 }}</td>
           <td class="amount-cell">R{{ inv.amount_paid|floatformat:2 }}</td>
           <td class="amount-cell {% if inv.credit_amount > 0 %}text-warning{% elif inv.amount_due > 0 %}text-danger{% else %}text-success{% endif %}">
-            {% if inv.credit_amount > 0 %}
-              <span class="credit-indicator credit"></span>
-              (R{{ inv.credit_amount|floatformat:2 }}) Credit
-            {% else %}
-              R{{ inv.amount_due|floatformat:2 }}
-            {% endif %}
+            R{{ inv.amount_due|floatformat:2 }}
           </td>
-          <td class="amount-cell">
-            {% if inv.credit_amount > 0 %}
-              <span class="text-info">{{ inv.months_covered|floatformat:1 }} months</span>
-              {% if inv.coverage_until %}
-                <br><small class="muted">until {{ inv.coverage_until|date:"Y-m-d" }}</small>
-              {% endif %}
-            {% else %}
-              -
-            {% endif %}
-          </td>
-          <td class="actions">
-            <a class="btn btn-sm" href="{% url 'billing:invoice_detail' inv.pk %}" title="View">👁️</a>
-            <a class="btn btn-sm" href="{% url 'billing:invoice_pdf' inv.pk %}" title="Download PDF">📄</a>
-            {% if inv.amount_due > 0 %}
-              <a class="btn btn-sm btn-primary" href="{% url 'billing:invoice_add_payment' inv.pk %}" title="Record Payment">💰</a>
-            {% endif %}
-            {% if inv.company %}
-              <a class="btn btn-sm btn-info" href="{% url 'billing:company_detail' inv.company.pk %}" title="View Company">🏢</a>
-            {% endif %}
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="10" style="text-align: center; padding: 40px;" class="muted">
-            <div style="font-size: 1.2em; margin-bottom: 10px;">No invoices yet</div>
-            <a href="{% url 'billing:invoice_create' %}" class="btn btn-primary">Create your first invoice</a>
-            <a href="{% url 'billing:generate_monthly_invoices' %}" class="btn btn-success" style="margin-left: 10px;">Generate Monthly Invoices</a>
+          <td>
+            <div class="actions">
+              <a class="btn btn-sm" href="{% url 'billing:invoice_detail' inv.pk %}">👁️</a>
+              <a class="btn btn-sm" href="{% url 'billing:invoice_pdf' inv.pk %}">📄</a>
+              {% if inv.amount_due > 0 %}<a class="btn btn-sm btn-primary" href="{% url 'billing:invoice_add_payment' inv.pk %}">💰</a>{% endif %}
+            </div>
           </td>
         </tr>
         {% endfor %}
       </tbody>
-    </table></div>
-
-    <!-- Summary Footer -->
-    {% if invoices %}
-    <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-      <div class="row" style="justify-content: space-between;">
-        <div>
-          <span class="muted">Total Invoices:</span>
-          <strong>{{ invoices|length }}</strong>
-        </div>
-        <div>
-          <span class="muted">Total Invoiced:</span>
-          <strong>R{{ invoices|length|multiply:150|floatformat:2 }}</strong>
-        </div>
-        <div>
-          <span class="muted">Net Outstanding:</span>
-          <strong class="{% if total_outstanding > 0 %}text-danger{% endif %}">
-            R{{ total_outstanding|floatformat:2 }}
-          </strong>
-        </div>
-        <div>
-          <span class="muted">Credit Months:</span>
-          <strong class="text-warning">{{ total_credit_months|floatformat:1 }}</strong>
-        </div>
-      </div>
-    </div>
-    {% endif %}
+    </table>
   </div>
 
-  <script>
-    // Auto-refresh for real-time updates (optional)
-    // setTimeout(function() {
-    //     location.reload();
-    // }, 300000); // Refresh every 5 minutes
-  </script>
+  <!-- MOBILE CARDS -->
+  <div class="mobile-cards">
+    {% for inv in invoices %}
+    <div class="inv-card">
+      <div class="inv-card-header">
+        <div>
+          <div class="inv-card-number">{{ inv.invoice_number }}</div>
+          <div class="inv-card-client">{{ inv.bill_to_name }}</div>
+          {% if inv.bill_to_company %}<div class="inv-card-company">{{ inv.bill_to_company }}</div>{% endif %}
+        </div>
+        {% if inv.status == "paid" %}<span class="badge badge-success">Paid</span>
+        {% elif inv.status == "credit" %}<span class="badge badge-warning">Credit</span>
+        {% elif inv.status == "overdue" %}<span class="badge badge-danger">Overdue</span>
+        {% elif inv.status == "partial" %}<span class="badge badge-warning">Partial</span>
+        {% elif inv.status == "sent" %}<span class="badge badge-info">Sent</span>
+        {% else %}<span class="badge badge-secondary">{{ inv.get_status_display }}</span>{% endif %}
+      </div>
+      <div class="inv-card-row">
+        <div>
+          <div class="inv-card-label">Invoice Date</div>
+          <div class="inv-card-value">{{ inv.invoice_date|date:"d M Y" }}</div>
+        </div>
+        <div>
+          <div class="inv-card-label">Due Date</div>
+          <div class="inv-card-value">{{ inv.due_date|date:"d M Y" }}</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="inv-card-label">Balance</div>
+          <div class="inv-card-value {% if inv.amount_due > 0 %}text-danger{% else %}text-success{% endif %}">
+            R{{ inv.amount_due|floatformat:2 }}
+          </div>
+        </div>
+      </div>
+      <div class="inv-card-actions">
+        <a class="btn btn-sm" href="{% url 'billing:invoice_detail' inv.pk %}">👁️ View</a>
+        <a class="btn btn-sm" href="{% url 'billing:invoice_pdf' inv.pk %}">📄 PDF</a>
+        {% if inv.amount_due > 0 %}<a class="btn btn-sm btn-primary" href="{% url 'billing:invoice_add_payment' inv.pk %}">💰 Pay</a>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div class="empty-state">
+    <p>No invoices yet</p>
+    <a href="{% url 'billing:invoice_create' %}" class="btn btn-primary">Create first invoice</a>
+  </div>
+  {% endif %}
+</div>
 </body>
 </html>
