@@ -1043,38 +1043,73 @@ body {
     }
 
     .hero-section {
-        padding-top: 4rem;
+        height: auto;
+        min-height: 100vh;
+        padding-top: 80px;
+        padding-bottom: 2rem;
         text-align: center;
+        overflow-y: auto;
+        align-items: flex-start;
+    }
+
+    .hero-section .container {
+        padding-top: 1.5rem;
+        padding-bottom: 1rem;
+    }
+
+    .hero-logo {
+        justify-content: center;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .gear-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .gear-container {
+        margin-bottom: 0.5rem;
+    }
+
+    .hero-title {
+        font-size: clamp(1.4rem, 7vw, 2rem) !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .tagline-main {
+        font-size: 1rem !important;
+        margin-bottom: 0.4rem !important;
+    }
+
+    .tagline-sub {
+        font-size: 0.875rem !important;
+        margin-bottom: 1rem !important;
+        line-height: 1.5;
     }
 
     .hero-buttons {
         flex-direction: column;
         align-items: stretch;
+        gap: 0.5rem;
     }
 
     .hero-buttons .btn {
         width: 100%;
-        margin-bottom: 1rem;
     }
 
     .hero-stats {
-        margin-top: 3rem;
+        margin-top: 1.5rem;
     }
 
-    .gear-icon {
-        width: 3rem;
-        height: 3rem;
-    }
-
-    .gear-text {
-        font-size: 1.25rem;
-    }
-
-    .tagline-main {
+    .hero-stats .stat-number {
         font-size: 1.5rem;
     }
 
-    .tagline-sub {
+    .hero-stats .stat-label {
+        font-size: 0.75rem;
+    }
+
+    .gear-text {
         font-size: 1rem;
     }
 
@@ -1096,7 +1131,7 @@ body {
     }
 
     .hero-section {
-        padding-top: 3rem;
+        padding-top: 72px;
     }
 
     .section-padding {
