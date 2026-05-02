@@ -29,7 +29,12 @@ SERVICES = {
             'Payment gateway setup',
             'Analytics and tracking'
         ],
-        'starting_price': 'R 8,500',
+        'examples': [
+            'Restaurant website with menu and reservations',
+            'Clothing boutique with online shop',
+            'Freelancer or agency portfolio site',
+            'Hair salon with service listings',
+        ],
         'icon': 'globe'
     },
     'custom-web-applications': {
@@ -43,7 +48,12 @@ SERVICES = {
             'Scalable architecture',
             'Ongoing support'
         ],
-        'starting_price': 'R 25,000',
+        'examples': [
+            'Staff leave management system',
+            'School fee payment portal',
+            'Property listing platform',
+            'Internal company tools and workflows',
+        ],
         'icon': 'code'
     },
     'business-systems': {
@@ -57,7 +67,12 @@ SERVICES = {
             'Multi-user access',
             'Data backup and security'
         ],
-        'starting_price': 'R 35,000',
+        'examples': [
+            'Inventory tracker for a hardware store',
+            'HR and payroll management system',
+            'Supplier and procurement management',
+            'Customer relationship management (CRM)',
+        ],
         'icon': 'briefcase'
     },
     'booking-systems': {
@@ -71,7 +86,12 @@ SERVICES = {
             'Reporting dashboard',
             'Mobile-friendly interface'
         ],
-        'starting_price': 'R 18,000',
+        'examples': [
+            'Appointment booking for a clinic or doctor',
+            'Car rental reservation system',
+            'Salon and spa scheduling platform',
+            'Event and venue booking system',
+        ],
         'icon': 'calendar'
     },
     'data-dashboards': {
@@ -85,7 +105,12 @@ SERVICES = {
             'Data integration',
             'Mobile access'
         ],
-        'starting_price': 'R 22,000',
+        'examples': [
+            'Sales performance dashboard for a retail team',
+            'Fleet tracking and logistics report',
+            'Financial KPI display for management',
+            'Marketing campaign analytics overview',
+        ],
         'icon': 'bar-chart'
     },
     'maintenance-support': {
@@ -99,8 +124,51 @@ SERVICES = {
             'Technical support',
             'Monthly reports'
         ],
-        'starting_price': 'R 1,200/month',
+        'examples': [
+            'Monthly security patches and updates',
+            'Content changes and new page additions',
+            'Speed and performance optimisation',
+            'Backup management and recovery support',
+        ],
         'icon': 'settings'
+    },
+    'business-emails': {
+        'title': 'Business Emails',
+        'description': 'Professional business email addresses that build trust and credibility with your clients.',
+        'features': [
+            'Custom domain email (you@yourbusiness.co.za)',
+            'Professional branded communication',
+            'Spam and virus protection',
+            'Access on any device',
+            'Easy setup and configuration',
+            'Ongoing email support'
+        ],
+        'examples': [
+            'info@yourshop.co.za for a retail store',
+            'sales@yourcompany.co.za for a sales team',
+            'support@yourbrand.co.za for customer service',
+            'hello@yourclinic.co.za for a medical practice',
+        ],
+        'icon': 'mail'
+    },
+    'digital-business-cards': {
+        'title': 'Digital Business Cards',
+        'description': 'Modern digital business card designs that make a lasting impression and are easy to share.',
+        'features': [
+            'Custom branded card design',
+            'Shareable via link or QR code',
+            'Clickable contact details',
+            'Social media links',
+            'Mobile-friendly display',
+            'Quick turnaround'
+        ],
+        'examples': [
+            'Freelancer card with WhatsApp, email and portfolio link',
+            'Real estate agent card with listings and contact info',
+            'Small business owner card with logo and social media',
+            'Consultant card shared via QR code at events',
+        ],
+        'icon': 'credit-card'
     }
 }
 
@@ -112,6 +180,8 @@ SUBJECTS = [
     "Booking and Reservation Systems",
     "Business Systems",
     "Data-Driven Dashboards",
+    "Business Emails",
+    "Digital Business Cards",
 ]
 SLUG_TO_LABEL = {slugify(s): s for s in SUBJECTS}
 
