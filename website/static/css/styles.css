@@ -165,7 +165,8 @@ body {
 
 /* Hero Section */
 .hero-section {
-    min-height: 100vh;
+    height: 100vh;
+    max-height: 100vh;
     background: var(--gradient-hero);
     display: flex;
     align-items: center;
@@ -173,6 +174,13 @@ body {
     position: relative;
     overflow: hidden;
     padding-top: 5rem;
+    box-sizing: border-box;
+}
+
+.hero-section .row.min-vh-100 {
+    min-height: unset !important;
+    height: 100%;
+    width: 100%;
 }
 
 .hero-patterns {
