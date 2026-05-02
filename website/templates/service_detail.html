@@ -60,7 +60,7 @@
               <ul class="service-features">
                 {% for feature in service.features %}
                   <li>
-                    <i data-lucide="check" class="me-2"></i>
+                    <i data-lucide="check-circle" class="me-2"></i>
                     {{ feature }}
                   </li>
                 {% endfor %}
@@ -73,7 +73,7 @@
               <ul class="service-features">
                 {% for example in service.examples %}
                   <li>
-                    <i data-lucide="lightbulb" class="me-2"></i>
+                    <i data-lucide="arrow-right" class="me-2"></i>
                     {{ example }}
                   </li>
                 {% endfor %}
@@ -84,30 +84,12 @@
             <div class="col-md-4">
               <h4 class="capability-title mb-3">Benefits</h4>
               <ul class="service-features">
-                <li>
-                  <i data-lucide="zap" class="me-2"></i>
-                  Fast delivery and implementation
-                </li>
-                <li>
-                  <i data-lucide="shield-check" class="me-2"></i>
-                  Secure and reliable solutions
-                </li>
-                <li>
-                  <i data-lucide="trending-up" class="me-2"></i>
-                  Scalable for future growth
-                </li>
-                <li>
-                  <i data-lucide="headphones" class="me-2"></i>
-                  Ongoing support and maintenance
-                </li>
-                <li>
-                  <i data-lucide="users" class="me-2"></i>
-                  User-friendly interfaces
-                </li>
-                <li>
-                  <i data-lucide="smartphone" class="me-2"></i>
-                  Mobile-responsive design
-                </li>
+                {% for benefit in service.benefits %}
+                  <li>
+                    <i data-lucide="check-circle" class="me-2"></i>
+                    {{ benefit }}
+                  </li>
+                {% endfor %}
               </ul>
             </div>
           </div>
