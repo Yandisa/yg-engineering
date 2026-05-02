@@ -38,7 +38,7 @@
 
             <p class="service-description mb-4">{{ service.description }}</p>
 
-            <ul class="service-features mb-4">
+            <ul class="service-features mb-3">
               {% for feature in service.features %}
                 <li>
                   <i data-lucide="check" class="me-2"></i>
@@ -46,6 +46,20 @@
                 </li>
               {% endfor %}
             </ul>
+
+            {% if service.examples %}
+            <div class="mb-4">
+              <p class="capability-title mb-2" style="font-size: 0.85rem;">Examples</p>
+              <ul class="service-features">
+                {% for example in service.examples|slice:":3" %}
+                  <li>
+                    <i data-lucide="lightbulb" class="me-2"></i>
+                    {{ example }}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
 
             <div class="d-flex justify-content-end mb-3">
               <a href="{% url 'service_detail' slug %}" class="btn btn-outline-primary btn-sm">
