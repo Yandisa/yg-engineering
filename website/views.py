@@ -35,6 +35,14 @@ SERVICES = {
             'Freelancer or agency portfolio site',
             'Hair salon with service listings',
         ],
+        'benefits': [
+            'Attract more customers online',
+            'Sell products or services 24/7',
+            'Build trust with a professional look',
+            'Rank higher on Google with built-in SEO',
+            'Manage your own content with ease',
+            'Track visitors and sales with analytics',
+        ],
         'icon': 'globe'
     },
     'custom-web-applications': {
@@ -53,6 +61,14 @@ SERVICES = {
             'School fee payment portal',
             'Property listing platform',
             'Internal company tools and workflows',
+        ],
+        'benefits': [
+            'Built exactly for your business needs',
+            'Replaces manual processes and spreadsheets',
+            'Secure login and user role management',
+            'Connects with your existing tools and systems',
+            'Grows with your business over time',
+            'Supported and maintained after launch',
         ],
         'icon': 'code'
     },
@@ -73,6 +89,14 @@ SERVICES = {
             'Supplier and procurement management',
             'Customer relationship management (CRM)',
         ],
+        'benefits': [
+            'Reduce time spent on admin and paperwork',
+            'Keep accurate records across your business',
+            'Multiple staff can access at the same time',
+            'Get real-time reports and business insights',
+            'Automate repetitive tasks and workflows',
+            'Your data is backed up and secure',
+        ],
         'icon': 'briefcase'
     },
     'booking-systems': {
@@ -91,6 +115,14 @@ SERVICES = {
             'Car rental reservation system',
             'Salon and spa scheduling platform',
             'Event and venue booking system',
+        ],
+        'benefits': [
+            'Accept bookings even when you are offline',
+            'Reduce no-shows with automated reminders',
+            'Collect payment at the time of booking',
+            'Manage all appointments in one place',
+            'Customers can book from any device',
+            'See booking trends and peak times',
         ],
         'icon': 'calendar'
     },
@@ -111,6 +143,14 @@ SERVICES = {
             'Financial KPI display for management',
             'Marketing campaign analytics overview',
         ],
+        'benefits': [
+            'Make faster, more informed decisions',
+            'See all your key numbers in one place',
+            'Spot trends and problems early',
+            'Share live reports with your team or clients',
+            'Pulls data from your existing systems',
+            'Access your dashboard from anywhere',
+        ],
         'icon': 'bar-chart'
     },
     'maintenance-support': {
@@ -130,6 +170,14 @@ SERVICES = {
             'Speed and performance optimisation',
             'Backup management and recovery support',
         ],
+        'benefits': [
+            'Your site stays secure against threats',
+            'Fast load times keep visitors happy',
+            'Content stays fresh and up to date',
+            'Peace of mind with regular backups',
+            'Help is available when something goes wrong',
+            'Monthly report so you know what was done',
+        ],
         'icon': 'settings'
     },
     'business-emails': {
@@ -137,17 +185,25 @@ SERVICES = {
         'description': 'Professional business email addresses that build trust and credibility with your clients.',
         'features': [
             'Custom domain email (you@yourbusiness.co.za)',
-            'Professional branded communication',
+            'Works with Gmail, Outlook and Apple Mail',
+            'We assist with setup on all your devices',
             'Spam and virus protection',
-            'Access on any device',
-            'Easy setup and configuration',
-            'Ongoing email support'
+            'Professional branded communication',
+            'Ongoing email support',
         ],
         'examples': [
-            'info@yourshop.co.za for a retail store',
-            'sales@yourcompany.co.za for a sales team',
-            'support@yourbrand.co.za for customer service',
-            'hello@yourclinic.co.za for a medical practice',
+            'A small business replacing a Gmail or Yahoo address with a branded one',
+            'A startup setting up emails for their whole team',
+            'A sole trader wanting a more professional client-facing email',
+            'A clinic or law firm needing separate department emails',
+        ],
+        'benefits': [
+            'Look more professional and trustworthy to clients',
+            'Use familiar apps like Gmail or Outlook',
+            'We handle the setup so you can hit the ground running',
+            'Access your email on phone, laptop or tablet',
+            'Stay protected from spam and phishing',
+            'One affordable annual and monthly fee',
         ],
         'icon': 'mail'
     },
@@ -167,6 +223,14 @@ SERVICES = {
             'Real estate agent card with listings and contact info',
             'Small business owner card with logo and social media',
             'Consultant card shared via QR code at events',
+        ],
+        'benefits': [
+            'Never run out of business cards again',
+            'Share your details instantly via WhatsApp or link',
+            'Always up to date — no reprinting needed',
+            'Makes a strong first impression',
+            'Works on any smartphone without an app',
+            'Ready quickly at an affordable once-off price',
         ],
         'icon': 'credit-card'
     }
