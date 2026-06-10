@@ -1,5 +1,5 @@
 """
-Django settings for ygengineering project — production ready.
+Django settings for ygengineering project.
 """
 
 from pathlib import Path
@@ -7,24 +7,22 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-s96!5y-36np9&+qyms*+a1wg!#87^$mw(gk(vwp%7l923&@@03'
+# -----------------------------------------------------------------------------
+# Core
+# -----------------------------------------------------------------------------
+SECRET_KEY = os.getenv("SECRET_KEY", "replace-this-in-env")
 
-DEBUG = False
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = [
-    "*",
-    "www.ygengineering.co.za",
-    "ygengineering.co.za",
-    "51.255.1.140",
-    "127.0.0.1",
-    "localhost",
-]
+ALLOWED_HOSTS = os.getenv(
+    "ALLOWED_HOSTS",
+    "www.ygengineering.co.za,ygengineering.co.za,51.255.1.140,127.0.0.1,localhost"
+).split(",")
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://www.ygengineering.co.za",
-    "https://ygengineering.co.za",
-    "http://51.255.1.140",
-]
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    "CSRF_TRUSTED_ORIGINS",
+    "https://www.ygengineering.co.za,https://ygengineering.co.za,http://51.255.1.140"
+).split(",")
 
 # -----------------------------------------------------------------------------
 # Apps
@@ -37,7 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
-    # local apps
+
     "website",
     "apps.billing",
 ]
@@ -78,7 +76,7 @@ WSGI_APPLICATION = "ygengineering.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": os.getenv("DB_PATH", str(BASE_DIR / "db.sqlite3")),
     }
 }
 
@@ -106,27 +104,32 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "website", "static")]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.getenv("MEDIA_ROOT", os.path.join(BASE_DIR, "media"))
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # -----------------------------------------------------------------------------
-# Email
+# Email — domains.co.za SMTP SSL
 # -----------------------------------------------------------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
-EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "true").lower() == "true"
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "ygengineeringza@gmail.com")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "ziiehdnitplygfsq")
-EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "30"))
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
-SERVER_EMAIL = os.getenv("SERVER_EMAIL", EMAIL_HOST_USER)
-CONTACT_RECIPIENT_EMAIL = os.getenv("CONTACT_RECIPIENT_EMAIL", "ygengineeringza@gmail.com")
+EMAIL_HOST = os.getenv("EMAIL_HOST", "cp72.domains.co.za")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "465"))
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "True").lower() == "true"
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "False").lower() == "true"
+
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "info@ygengineering.co.za")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "info@ygengineering.co.za")
+SERVER_EMAIL = os.getenv("SERVER_EMAIL", "info@ygengineering.co.za")
+CONTACT_RECIPIENT_EMAIL = os.getenv("CONTACT_RECIPIENT_EMAIL", "info@ygengineering.co.za")
 EMAIL_SUBJECT_PREFIX = os.getenv("EMAIL_SUBJECT_PREFIX", "[YG Engineering] ")
-ADMINS = [("Site Admin", os.getenv("ADMIN_EMAIL", "ygengineeringza@gmail.com"))]
+EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "30"))
+
+ADMINS = [("Site Admin", os.getenv("ADMIN_EMAIL", "info@ygengineering.co.za"))]
 
 # -----------------------------------------------------------------------------
 # Auth redirects
@@ -138,13 +141,15 @@ LOGOUT_REDIRECT_URL = "/"
 # -----------------------------------------------------------------------------
 # Security
 # -----------------------------------------------------------------------------
-SESSION_COOKIE_SECURE = False   # set True once HTTPS is live
-CSRF_COOKIE_SECURE = False      # set True once HTTPS is live
-SECURE_SSL_REDIRECT = False     # set True once HTTPS is live
+SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "False").lower() == "true"
+CSRF_COOKIE_SECURE = os.getenv("CSRF_COOKIE_SECURE", "False").lower() == "true"
+SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "False").lower() == "true"
+
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
 REFERRER_POLICY = "strict-origin-when-cross-origin"
+
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # -----------------------------------------------------------------------------
@@ -156,10 +161,12 @@ INVOICE_EMAIL = "info@ygengineering.co.za"
 INVOICE_PHONE = "+27 (0) 73 226 1199"
 INVOICE_ADDRESS = "Johannesburg, South Africa"
 INVOICE_LOGO_PATH = os.path.join(BASE_DIR, "media", "branding", "yg_logo.png")
+
 INVOICE_BANK_NAME = "Capitec Bank"
 INVOICE_BANK_ACCOUNT_NAME = "YG Engineering"
 INVOICE_BANK_ACCOUNT_NUMBER = "2509492051"
 INVOICE_BANK_BRANCH_CODE = "470010"
+
 SITE_NAME = "YG Engineering"
 SITE_URL = "https://www.ygengineering.co.za"
 
@@ -184,27 +191,3 @@ LOGGING = {
         },
     },
 }
-
-# -----------------------------------------------------------------------------
-# Email — domains.co.za SMTP (SSL)
-# -----------------------------------------------------------------------------
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "cp72.domains.co.za"
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_USE_TLS = False
-EMAIL_HOST_USER = "info@ygengineering.co.za"
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
-DEFAULT_FROM_EMAIL = "info@ygengineering.co.za"
-SERVER_EMAIL = "info@ygengineering.co.za"
-CONTACT_RECIPIENT_EMAIL = "info@ygengineering.co.za"
-
-# -----------------------------------------------------------------------------
-# Persistent storage (Coolify mounts these as volumes)
-# -----------------------------------------------------------------------------
-import os
-DATABASES["default"]["NAME"] = os.getenv("DB_PATH", BASE_DIR / "db.sqlite3")
-MEDIA_ROOT = os.getenv("MEDIA_ROOT", os.path.join(BASE_DIR, "media"))
-
-# Whitenoise static files
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
